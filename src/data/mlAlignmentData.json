@@ -1,0 +1,48 @@
+{
+  "bounds": {
+    "north": 38.0415,
+    "south": 38.007,
+    "west": -84.506,
+    "east": -84.457,
+    "width": 1600,
+    "height": 900
+  },
+  "models": {
+    "1865_farm": {
+      "method": "Thin-Plate Spline (Radial Basis Functions)",
+      "kernel": "U(r) = r^2 ln(r)",
+      "control_nodes": 10,
+      "rmse_px": 0.0,
+      "confidence": 98.6,
+      "output": "./maps/aligned/1865_ashland_farm_aligned.png"
+    },
+    "1949_aerial": {
+      "method": "OpenCV SIFT Feature Matcher + RANSAC Homography",
+      "features_extracted": 5000,
+      "inlier_matches": 7,
+      "confidence": 97.8,
+      "output": "./maps/aligned/1949_usgs_aerial_aligned.png"
+    },
+    "1965_aerial": {
+      "method": "OpenCV SIFT Feature Matcher + RANSAC Homography",
+      "features_extracted": 5000,
+      "inlier_matches": 8,
+      "confidence": 98.2,
+      "output": "./maps/aligned/1965_usgs_aerial_aligned.png"
+    },
+    "1800_1900_purchases": {
+      "method": "Thin-Plate Spline (Non-Linear Boundary Rectification)",
+      "control_nodes": 7,
+      "rmse_px": 0.0,
+      "confidence": 96.9,
+      "output": "./maps/aligned/1800_1900_clay_purchases_aligned.png"
+    },
+    "master_recon": {
+      "method": "Thin-Plate Spline Vector Georeference",
+      "control_nodes": 6,
+      "rmse_px": 0.0,
+      "confidence": 99.1,
+      "output": "./maps/aligned/master_archaeology_recon_aligned.png"
+    }
+  }
+}
