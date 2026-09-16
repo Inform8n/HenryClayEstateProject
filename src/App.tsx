@@ -10,6 +10,7 @@ import {
   ChevronRight,
   SplitSquareVertical,
   Sliders,
+  Archive,
   ExternalLink
 } from "lucide-react";
 
@@ -22,6 +23,7 @@ export function App() {
   const [selectedChapter, setSelectedChapter] = useState<AnalysisChapter>(ANALYSIS_CHAPTERS[0]);
   const [isSlideModalOpen, setIsSlideModalOpen] = useState<boolean>(false);
   const [isEvidenceModalOpen, setIsEvidenceModalOpen] = useState<boolean>(false);
+  const [isSourcesModalOpen, setIsSourcesModalOpen] = useState<boolean>(false);
 
   return (
     <div className="flex flex-col h-screen w-screen bg-slate-950 text-slate-100 font-sans overflow-hidden">
@@ -81,17 +83,27 @@ export function App() {
           </select>
         </div>
 
-        {/* Field Evidence Quick Button */}
-        <button
-          onClick={() => setIsEvidenceModalOpen(true)}
-          className="flex items-center gap-1.5 px-3 py-1.5 bg-red-950/60 hover:bg-red-900/80 text-red-300 border border-red-800/80 rounded-lg text-xs font-semibold transition shadow-sm"
-        >
-          <Camera className="w-3.5 h-3.5 text-red-400" />
-          <span className="hidden sm:inline">1337 Cooper Dr</span> Headstones Evidence
-        </button>
+        {/* Action Buttons */}
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={() => setIsSourcesModalOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 rounded-lg text-xs font-semibold transition"
+          >
+            <Archive className="w-3.5 h-3.5 text-amber-400" />
+            <span className="hidden sm:inline">Archival</span> Sources Guide
+          </button>
+
+          <button
+            onClick={() => setIsEvidenceModalOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-red-950/60 hover:bg-red-900/80 text-red-300 border border-red-800/80 rounded-lg text-xs font-semibold transition shadow-sm"
+          >
+            <Camera className="w-3.5 h-3.5 text-red-400" />
+            <span className="hidden sm:inline">1337 Cooper Dr</span> Evidence
+          </button>
+        </div>
       </header>
 
-      {/* MAIN WORKSPACE: LEFT COMPARISON VIEWER (70%), RIGHT ANALYSIS PANEL (30%) */}
+      {/* MAIN WORKSPACE */}
       <main className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
         {/* Left: Interactive Before/After Split Comparison Canvas */}
         <div className="flex-1 h-full relative overflow-hidden">
@@ -108,17 +120,20 @@ export function App() {
             chapter={selectedChapter}
             onOpenFieldEvidenceModal={() => setIsEvidenceModalOpen(true)}
             onOpenSlideModal={() => setIsSlideModalOpen(true)}
+            onOpenSourcesModal={() => setIsSourcesModalOpen(true)}
           />
         </div>
       </main>
 
-      {/* Modals for Slide View and Field Photos */}
+      {/* Modals for Slide View, Field Photos, and Archival Sources Guide */}
       <PresentationModals
         chapter={selectedChapter}
         isSlideModalOpen={isSlideModalOpen}
         isEvidenceModalOpen={isEvidenceModalOpen}
+        isSourcesModalOpen={isSourcesModalOpen}
         onCloseSlideModal={() => setIsSlideModalOpen(false)}
         onCloseEvidenceModal={() => setIsEvidenceModalOpen(false)}
+        onCloseSourcesModal={() => setIsSourcesModalOpen(false)}
       />
     </div>
   );

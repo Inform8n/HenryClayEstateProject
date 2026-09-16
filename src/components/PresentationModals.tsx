@@ -1,21 +1,25 @@
 import React from "react";
 import { AnalysisChapter } from "../data/analysisChapters";
-import { Camera, FileImage, ExternalLink, MapPin } from "lucide-react";
+import { Camera, FileImage, ExternalLink, MapPin, Database, Archive, Download, ExternalLink as LinkIcon } from "lucide-react";
 
 interface Props {
   chapter: AnalysisChapter;
   isSlideModalOpen: boolean;
   isEvidenceModalOpen: boolean;
+  isSourcesModalOpen: boolean;
   onCloseSlideModal: () => void;
   onCloseEvidenceModal: () => void;
+  onCloseSourcesModal: () => void;
 }
 
 export function PresentationModals({
   chapter,
   isSlideModalOpen,
   isEvidenceModalOpen,
+  isSourcesModalOpen,
   onCloseSlideModal,
-  onCloseEvidenceModal
+  onCloseEvidenceModal,
+  onCloseSourcesModal
 }: Props) {
   return (
     <>
@@ -141,6 +145,112 @@ export function PresentationModals({
                 className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg font-semibold"
               >
                 Back to Analysis
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 3. ARCHIVAL SOURCES & MASTER REPOSITORIES MODAL */}
+      {isSourcesModalOpen && (
+        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-[3000] flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-4xl w-full p-6 shadow-2xl space-y-4 text-xs max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+              <div className="flex items-center gap-2 text-white font-bold text-sm">
+                <Archive className="w-4 h-4 text-amber-500" />
+                <span>Archival Sources & Master Negative Retrieval Guide</span>
+              </div>
+              <button
+                onClick={onCloseSourcesModal}
+                className="text-slate-400 hover:text-white font-bold px-2 py-1 text-sm"
+              >
+                ✕
+              </button>
+            </div>
+
+            <p className="text-slate-300 text-xs leading-relaxed">
+              To replace presentation slide captures with uncompressed master scans (often 100+ MB TIFFs at 1,200 to 2,400 DPI), use these specific catalog identifiers, flight roll codes, and repository call numbers:
+            </p>
+
+            <div className="space-y-3">
+              {/* USGS 1949 Aerial */}
+              <div className="p-3.5 bg-slate-850 border border-slate-700 rounded-xl space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="font-bold text-slate-100 text-sm flex items-center gap-2">
+                    <Database className="w-4 h-4 text-blue-400" />
+                    1. 1949 USGS Aerial Survey (Slide 10)
+                  </div>
+                  <span className="px-2 py-0.5 rounded bg-blue-950 text-blue-300 border border-blue-800 font-mono text-[10px]">
+                    Project: GS-JS | Roll: 2 | Frame: 10
+                  </span>
+                </div>
+                <p className="text-slate-300 text-[11px] leading-relaxed">
+                  <b>Repository:</b> U.S. Geological Survey (USGS) Earth Resources Observation and Science (EROS) Center & National Archives (NARA Record Group 57). <br />
+                  <b>Symbol Code:</b> In mid-century USDA/USGS aerial surveys, <code>JS</code> was the specific county symbol for <b>Fayette County, Kentucky</b>. <br />
+                  <b>How to obtain raw scan:</b> Search <a href="https://earthexplorer.usgs.gov" target="_blank" rel="noreferrer" className="text-amber-400 underline inline-flex items-center gap-1">USGS EarthExplorer <LinkIcon className="w-2.5 h-2.5" /></a> under <i>Aerial Photography $\rightarrow$ Aerial Photo Single Frames</i> for coordinates <code>38.0286, -84.4789</code> and Project <code>GS-JS</code>. You can download the 1,200 DPI master scan.
+                </p>
+              </div>
+
+              {/* 1865 Map & Land Purchases */}
+              <div className="p-3.5 bg-slate-850 border border-slate-700 rounded-xl space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="font-bold text-slate-100 text-sm flex items-center gap-2">
+                    <Archive className="w-4 h-4 text-amber-400" />
+                    2. 1865 Map of Ashland Farm & Land Purchases 1800-1900 (Slides 2, 3, 4)
+                  </div>
+                  <span className="px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800 font-mono text-[10px]">
+                    Cartographer: Richard M. Bean (1980)
+                  </span>
+                </div>
+                <p className="text-slate-300 text-[11px] leading-relaxed">
+                  <b>Primary Repositories:</b>
+                  <ul className="list-disc pl-4 mt-1 space-y-1 text-slate-300">
+                    <li><b>Ashland — The Henry Clay Memorial Foundation Archives:</b> Located on site at 120 Sycamore Rd, Lexington KY. The curatorial research collection (curated by Mary Gardner Turner and foundation historians) preserves Bean's original hand-drafted Mylar and linen overlay maps.</li>
+                    <li><b>University of Kentucky Special Collections Research Center (SCRC):</b> Margaret I. King Library. Holds the Henry Clay Family Papers, Richard M. Bean research papers, and Fayette County historic plat books.</li>
+                    <li><b>Lexington Public Library (Central Library — Kentucky Room):</b> Houses Richard M. Bean's publication <i>A History of the Henry Clay Family Properties</i> (Call No. <code>Ky 929.2 C619b</code>).</li>
+                  </ul>
+                </p>
+              </div>
+
+              {/* 1877 Beers Atlas */}
+              <div className="p-3.5 bg-slate-850 border border-slate-700 rounded-xl space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="font-bold text-slate-100 text-sm flex items-center gap-2">
+                    <Database className="w-4 h-4 text-emerald-400" />
+                    3. 1877 D.G. Beers & Co. Atlas of Fayette County
+                  </div>
+                  <span className="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 font-mono text-[10px]">
+                    LOC Control No: 2005627107
+                  </span>
+                </div>
+                <p className="text-slate-300 text-[11px] leading-relaxed">
+                  <b>Library of Congress Master Scan:</b> High-resolution uncompressed master color TIFF scans of the entire 1877 Fayette County atlas are available directly on the <a href="https://www.loc.gov/item/2005627107/" target="_blank" rel="noreferrer" className="text-amber-400 underline inline-flex items-center gap-1">Library of Congress Map Division <LinkIcon className="w-2.5 h-2.5" /></a> website. Shows property parcels for Ashland, Ashland-on-Tates-Creek, and Mansfield.
+                </p>
+              </div>
+
+              {/* HABS Architectural Drawings */}
+              <div className="p-3.5 bg-slate-850 border border-slate-700 rounded-xl space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="font-bold text-slate-100 text-sm flex items-center gap-2">
+                    <Database className="w-4 h-4 text-purple-400" />
+                    4. Historic American Buildings Survey (HABS No. KY-172)
+                  </div>
+                  <span className="px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800 font-mono text-[10px]">
+                    HABS No. KY-172 & KY-172-B
+                  </span>
+                </div>
+                <p className="text-slate-300 text-[11px] leading-relaxed">
+                  <b>Library of Congress HABS Collection:</b> Measured drawings, architectural floor plans, dependency elevations (smokehouse, dairy, carriage house), and historic black-and-white 8x10 negatives cataloged under <a href="https://www.loc.gov/pictures/collection/hh/" target="_blank" rel="noreferrer" className="text-amber-400 underline inline-flex items-center gap-1">HABS Collections <LinkIcon className="w-2.5 h-2.5" /></a>.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-3 border-t border-slate-800">
+              <button
+                onClick={onCloseSourcesModal}
+                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg font-semibold"
+              >
+                Close Guide
               </button>
             </div>
           </div>

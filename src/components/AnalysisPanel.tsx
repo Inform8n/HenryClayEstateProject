@@ -6,6 +6,7 @@ import {
   CheckCircle2,
   Camera,
   MapPin,
+  Archive,
   ExternalLink,
   HelpCircle,
   FileSpreadsheet
@@ -15,12 +16,14 @@ interface Props {
   chapter: AnalysisChapter;
   onOpenFieldEvidenceModal: () => void;
   onOpenSlideModal: () => void;
+  onOpenSourcesModal: () => void;
 }
 
 export function AnalysisPanel({
   chapter,
   onOpenFieldEvidenceModal,
-  onOpenSlideModal
+  onOpenSlideModal,
+  onOpenSourcesModal
 }: Props) {
   return (
     <div className="h-full overflow-y-auto p-5 space-y-6 text-xs bg-slate-900 border-l border-slate-800 text-slate-300">
@@ -35,8 +38,16 @@ export function AnalysisPanel({
         <p className="text-[11px] text-slate-400 mt-1">
           {chapter.subtitle}
         </p>
-        <div className="inline-block mt-2 px-2 py-0.5 rounded bg-slate-800 text-[10px] text-slate-400 border border-slate-700">
-          Reference: {chapter.slideRef}
+        <div className="flex items-center gap-2 mt-2">
+          <span className="px-2 py-0.5 rounded bg-slate-800 text-[10px] text-slate-400 border border-slate-700">
+            {chapter.slideRef}
+          </span>
+          <button
+            onClick={onOpenSlideModal}
+            className="text-[10px] text-amber-400 hover:underline"
+          >
+            View Slide
+          </button>
         </div>
       </div>
 
@@ -105,13 +116,30 @@ export function AnalysisPanel({
           Cooper Dr Headstones Evidence
         </div>
         <p className="text-[11px] text-slate-300 leading-relaxed">
-          B.P. Thompson's field reconnaissance documented surviving limestone field headstones and the historic stone perimeter wall at 1337 Cooper Drive.
+          Field evidence documented by B.P. Thompson at 1337 Cooper Drive (coordinates: 38.014495, -84.479273) with limestone headstones and dry-stone wall.
         </p>
         <button
           onClick={onOpenFieldEvidenceModal}
           className="w-full py-1.5 bg-red-900/60 hover:bg-red-800/80 text-red-200 border border-red-700/80 rounded-lg text-center font-bold text-[11px] transition shadow"
         >
-          View Field Photographs & Pinpoint
+          View Field Photos & Pinpoint
+        </button>
+      </div>
+
+      {/* Archival Master Sourcing Button */}
+      <div className="p-3.5 rounded-xl bg-slate-850 border border-slate-700 space-y-2">
+        <div className="font-bold text-slate-200 text-xs flex items-center gap-1.5">
+          <Archive className="w-3.5 h-3.5 text-amber-400" />
+          Raw Master Scans & Archival Citations
+        </div>
+        <p className="text-[11px] text-slate-400 leading-relaxed">
+          Need higher resolution originals (100+ MB TIFFs at 1,200 DPI) than the PDF slide export?
+        </p>
+        <button
+          onClick={onOpenSourcesModal}
+          className="w-full py-1.5 bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-600 rounded-lg text-center font-bold text-[11px] transition"
+        >
+          View Archival Retrieval Guide
         </button>
       </div>
 
