@@ -8,11 +8,9 @@ import {
   ZoomOut,
   RotateCcw,
   MapPin,
-  Info,
-  Maximize2,
   FileImage,
   Sparkles,
-  ChevronRight
+  X
 } from "lucide-react";
 
 interface Props {
@@ -21,6 +19,9 @@ interface Props {
   onOpenFieldEvidenceModal: () => void;
 }
 
+// Canvas aspect is fixed at 16:9 (the 1600x900 alignment grid); it is sized to the space available
+// so phones see the whole map. All overlays (pins, divider, lens) are positioned in percentages or in
+// canvas-local pixels, so they stay put at any size and any zoom.
 export function InteractiveComparisonViewer({
   chapter,
   onOpenSlideModal,
@@ -33,11 +34,13 @@ export function InteractiveComparisonViewer({
   const [pan, setPan] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [isPanning, setIsPanning] = useState<boolean>(false);
   const [panStart, setPanStart] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const [spyglassPos, setSpyglassPos] = useState<{ x: number; y: number }>({ x: 400, y: 300 });
+  const [spyglassPos, setSpyglassPos] = useState<{ x: number; y: number }>({ x: 640, y: 360 }); // canvas-local px
   const [activeHotspot, setActiveHotspot] = useState<AnalysisHotspot | null>(null);
   const [isHovering, setIsHovering] = useState<boolean>(false);
+  const [viewportSize, setViewportSize] = useState<{ w: number; h: number }>({ w: 1280, h: 720 });
 
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const viewportRef = useRef<HTMLDivElement | null>(null);
   const isDraggingSlider = useRef<boolean>(false);
 
   // Reset zoom & pan when chapter changes
@@ -47,43 +50,112 @@ export function InteractiveComparisonViewer({
     setActiveHotspot(null);
   }, [chapter.id]);
 
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    // If middle click or holding shift/alt, start panning
-    if (e.button === 1 || e.shiftKey || e.altKey) {
+  // Fit the 16:9 canvas to the container (max 1280 px wide)
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const fit = () => {
+      const cw = el.clientWidth;
+      const ch = el.clientHeight;
+      let w = Math.min(cw, 1280);
+      let h = (w * 9) / 16;
+      if (h > ch) {
+        h = ch;
+        w = (h * 16) / 9;
+      }
+      setViewportSize({ w: Math.max(200, Math.floor(w)), h: Math.max(112, Math.floor(h)) });
+    };
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const lensRadius = Math.round(Math.min(160, viewportSize.w * 0.16));
+
+  // Divider position (% of canvas width) from a pointer event, accounting for zoom/pan
+  const sliderPctFromEvent = (e: React.PointerEvent): number | null => {
+    const rect = viewportRef.current?.getBoundingClientRect();
+    if (!rect || rect.width === 0) return null;
+    return Math.max(2, Math.min(98, ((e.clientX - rect.left) / rect.width) * 100));
+  };
+
+  // Lens position in canvas-local pixels (the canvas may be CSS-scaled by zoom)
+  const updateSpyglass = (e: React.PointerEvent) => {
+    const rect = viewportRef.current?.getBoundingClientRect();
+    if (!rect || rect.width === 0 || rect.height === 0) return;
+    setSpyglassPos({
+      x: ((e.clientX - rect.left) / rect.width) * viewportSize.w,
+      y: ((e.clientY - rect.top) / rect.height) * viewportSize.h
+    });
+  };
+
+  const capture = (e: React.PointerEvent) => {
+    try {
+      containerRef.current?.setPointerCapture(e.pointerId);
+    } catch {
+      /* not supported */
+    }
+  };
+  const release = (e: React.PointerEvent) => {
+    try {
+      containerRef.current?.releasePointerCapture(e.pointerId);
+    } catch {
+      /* ignore */
+    }
+  };
+
+  // Pointer events cover mouse, touch and pen. In split mode a press-and-drag anywhere on the canvas
+  // moves the divider; shift/alt/middle-button (mouse) pans; spyglass follows the pointer.
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if ((e.target as HTMLElement).closest("[data-hotspot]")) return; // let hotspot taps through
+    if (e.pointerType === "mouse" && (e.button === 1 || e.shiftKey || e.altKey)) {
       setIsPanning(true);
       setPanStart({ x: e.clientX - pan.x, y: e.clientY - pan.y });
+      capture(e);
+      return;
+    }
+    if (viewMode === "split") {
+      isDraggingSlider.current = true;
+      const pct = sliderPctFromEvent(e);
+      if (pct !== null) setSliderPos(pct);
+      capture(e);
+    } else if (viewMode === "spyglass") {
+      setIsHovering(true);
+      updateSpyglass(e);
+      capture(e);
     }
   };
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (isPanning) {
       setPan({ x: e.clientX - panStart.x, y: e.clientY - panStart.y });
+      return;
     }
-
-    if (viewMode === "spyglass" && containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      setSpyglassPos({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top
-      });
+    if (viewMode === "spyglass") {
+      setIsHovering(true);
+      updateSpyglass(e);
     }
-
-    if (isDraggingSlider.current && containerRef.current && viewMode === "split") {
-      const rect = containerRef.current.getBoundingClientRect();
-      const clientX = e.clientX - rect.left;
-      const pct = Math.max(2, Math.min(98, (clientX / rect.width) * 100));
-      setSliderPos(pct);
+    if (isDraggingSlider.current && viewMode === "split") {
+      const pct = sliderPctFromEvent(e);
+      if (pct !== null) setSliderPos(pct);
     }
   };
 
-  const handleMouseUp = () => {
+  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
     setIsPanning(false);
     isDraggingSlider.current = false;
+    release(e);
   };
 
-  const handleSliderBarMouseDown = (e: React.MouseEvent) => {
+  const handlePointerLeave = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === "mouse") setIsHovering(false);
+  };
+
+  const handleDividerPointerDown = (e: React.PointerEvent) => {
     e.stopPropagation();
     isDraggingSlider.current = true;
+    capture(e);
   };
 
   const handleHotspotClick = (hs: AnalysisHotspot, e: React.MouseEvent) => {
@@ -94,10 +166,10 @@ export function InteractiveComparisonViewer({
   return (
     <div className="flex flex-col h-full w-full bg-slate-950 overflow-hidden select-none relative">
       {/* TOP CONTROLS & COMPARISON BAR */}
-      <div className="flex items-center justify-between px-5 py-2 bg-slate-900/90 backdrop-blur border-b border-slate-800 z-20 shrink-0 text-xs">
+      <div className="flex items-center justify-between gap-2 px-3 sm:px-5 py-2 bg-slate-900/90 backdrop-blur border-b border-slate-800 z-20 shrink-0 text-xs overflow-x-auto">
         <div className="flex items-center gap-3">
           {/* Mode Switcher */}
-          <div className="flex items-center gap-1 bg-slate-800 p-0.5 rounded-lg border border-slate-700">
+          <div className="flex items-center gap-1 bg-slate-800 p-0.5 rounded-lg border border-slate-700 shrink-0">
             <button
               onClick={() => setViewMode("split")}
               className={`px-3 py-1 font-semibold rounded-md transition flex items-center gap-1.5 ${
@@ -107,7 +179,7 @@ export function InteractiveComparisonViewer({
               }`}
             >
               <SplitSquareVertical className="w-3.5 h-3.5" />
-              Before / After Split
+              <span className="hidden sm:inline">Before / After </span>Split
             </button>
             <button
               onClick={() => setViewMode("opacity")}
@@ -118,7 +190,7 @@ export function InteractiveComparisonViewer({
               }`}
             >
               <Sliders className="w-3.5 h-3.5" />
-              Cross-Fade Opacity
+              <span className="hidden sm:inline">Cross-Fade </span>Opacity
             </button>
             <button
               onClick={() => setViewMode("spyglass")}
@@ -129,13 +201,13 @@ export function InteractiveComparisonViewer({
               }`}
             >
               <Search className="w-3.5 h-3.5" />
-              Spyglass Lens
+              Spyglass<span className="hidden sm:inline"> Lens</span>
             </button>
           </div>
 
           {/* Opacity Slider in opacity mode */}
           {viewMode === "opacity" && (
-            <div className="flex items-center gap-2 bg-slate-850 px-3 py-1 rounded-lg border border-slate-700">
+            <div className="flex items-center gap-2 bg-slate-850 px-3 py-1 rounded-lg border border-slate-700 shrink-0">
               <span className="text-slate-400">Map Fade:</span>
               <input
                 type="range"
@@ -152,7 +224,7 @@ export function InteractiveComparisonViewer({
           {/* Instructions banner */}
           {viewMode === "split" && (
             <div className="hidden md:flex items-center gap-1.5 text-slate-400 text-[11px]">
-              <span className="text-amber-400 font-bold">◄ Drag Slider:</span>
+              <span className="text-amber-400 font-bold">◄ Drag anywhere:</span>
               <span>Modern Satellite + Streets on Left</span>
               <span className="text-slate-600">|</span>
               <span className="text-amber-300 font-medium">Presentation Map on Right ►</span>
@@ -161,7 +233,7 @@ export function InteractiveComparisonViewer({
         </div>
 
         {/* Right Tools: Zoom, Pan, View Original Slide */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 shrink-0">
           <div className="flex items-center space-x-1 bg-slate-800 p-0.5 rounded-lg border border-slate-700">
             <button
               onClick={() => setZoom((z) => Math.min(z + 0.25, 3.5))}
@@ -191,7 +263,7 @@ export function InteractiveComparisonViewer({
             className="flex items-center gap-1.5 px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg font-medium transition"
           >
             <FileImage className="w-3.5 h-3.5 text-amber-400" />
-            View Original Presentation Slide
+            <span className="hidden sm:inline">View Original Presentation </span>Slide
           </button>
         </div>
       </div>
@@ -200,20 +272,23 @@ export function InteractiveComparisonViewer({
       <div
         ref={containerRef}
         className="flex-1 relative overflow-hidden bg-slate-950 cursor-crosshair flex items-center justify-center select-none"
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => { setIsHovering(false); isDraggingSlider.current = false; setIsPanning(false); }}
+        style={{ touchAction: "none" }}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        onPointerEnter={(e) => { if (e.pointerType === "mouse") setIsHovering(true); }}
+        onPointerLeave={handlePointerLeave}
       >
-        {/* Scaled & Panned Viewport Container */}
+        {/* Scaled & Panned Viewport Container (16:9, fitted to the available space) */}
         <div
+          ref={viewportRef}
           style={{
             transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
             transformOrigin: "center center",
             transition: isPanning ? "none" : "transform 0.08s ease-out",
-            width: "1280px",
-            height: "720px"
+            width: `${viewportSize.w}px`,
+            height: `${viewportSize.h}px`
           }}
           className="relative shrink-0 shadow-2xl rounded-lg overflow-hidden border border-slate-800"
         >
@@ -221,17 +296,18 @@ export function InteractiveComparisonViewer({
           <img
             src={chapter.modernImageUrl}
             alt={chapter.modernLabel}
+            draggable={false}
             className="absolute inset-0 w-full h-full object-cover pointer-events-none"
           />
 
-          {/* LAYER 2: ML-Aligned Historical Presentation Map (Clipped or Faded) */}
+          {/* LAYER 2: Aligned Historical Presentation Map (Clipped or Faded) */}
           <div
             style={{
               clipPath:
                 viewMode === "split"
                   ? `polygon(${sliderPos}% 0, 100% 0, 100% 100%, ${sliderPos}% 100%)`
                   : viewMode === "spyglass" && isHovering
-                  ? `circle(160px at ${(spyglassPos.x / (containerRef.current?.clientWidth || 1)) * 100}% ${(spyglassPos.y / (containerRef.current?.clientHeight || 1)) * 100}%)`
+                  ? `circle(${lensRadius}px at ${spyglassPos.x}px ${spyglassPos.y}px)`
                   : "none",
               opacity: viewMode === "opacity" ? opacity / 100 : 1.0
             }}
@@ -240,6 +316,7 @@ export function InteractiveComparisonViewer({
             <img
               src={chapter.historicalImageUrl}
               alt={chapter.historicalLabel}
+              draggable={false}
               className="w-full h-full object-cover"
             />
           </div>
@@ -248,6 +325,7 @@ export function InteractiveComparisonViewer({
           {chapter.hotspots.map((hs) => (
             <div
               key={hs.id}
+              data-hotspot={hs.id}
               style={{ left: `${hs.pixelX}%`, top: `${hs.pixelY}%` }}
               onClick={(e) => handleHotspotClick(hs, e)}
               className="absolute -translate-x-1/2 -translate-y-1/2 z-30 group cursor-pointer"
@@ -272,14 +350,15 @@ export function InteractiveComparisonViewer({
             </div>
           ))}
 
-          {/* Split Mode: Draggable Divider Bar */}
+          {/* Split Mode: Draggable Divider (wide hit-area for fingers, thin visible bar) */}
           {viewMode === "split" && (
             <div
               style={{ left: `${sliderPos}%` }}
-              onMouseDown={handleSliderBarMouseDown}
-              className="absolute top-0 bottom-0 w-1 bg-amber-400 shadow-[0_0_16px_rgba(245,158,11,0.9)] cursor-ew-resize z-40"
+              onPointerDown={handleDividerPointerDown}
+              className="absolute top-0 bottom-0 w-8 -translate-x-1/2 cursor-ew-resize z-40 flex justify-center"
             >
-              <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-amber-500 border-2 border-slate-950 flex items-center justify-center text-slate-950 font-extrabold shadow-2xl text-xs hover:scale-110 active:scale-95 transition-transform">
+              <div className="w-1 h-full bg-amber-400 shadow-[0_0_16px_rgba(245,158,11,0.9)]" />
+              <div className="absolute top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-amber-500 border-2 border-slate-950 flex items-center justify-center text-slate-950 font-extrabold shadow-2xl text-sm hover:scale-110 active:scale-95 transition-transform">
                 ⇄
               </div>
             </div>
@@ -291,7 +370,7 @@ export function InteractiveComparisonViewer({
               <div className="absolute top-3 left-3 z-20 bg-slate-900/85 backdrop-blur px-3 py-1 rounded-lg border border-slate-700/80 text-[11px] font-bold text-emerald-400 shadow">
                 ◄ Modern Satellite & Streets
               </div>
-              <div className="absolute top-3 right-3 z-20 bg-slate-900/85 backdrop-blur px-3 py-1 rounded-lg border border-slate-700/80 text-[11px] font-bold text-amber-400 shadow">
+              <div className="absolute top-3 right-3 z-20 bg-slate-900/85 backdrop-blur px-3 py-1 rounded-lg border border-slate-700/80 text-[11px] font-bold text-amber-400 shadow max-w-[55%] truncate">
                 {chapter.historicalLabel} ►
               </div>
             </>
@@ -301,15 +380,15 @@ export function InteractiveComparisonViewer({
           {viewMode === "spyglass" && isHovering && (
             <div
               style={{
-                left: `${(spyglassPos.x / (containerRef.current?.clientWidth || 1)) * 100}%`,
-                top: `${(spyglassPos.y / (containerRef.current?.clientHeight || 1)) * 100}%`,
-                width: "280px",
-                height: "280px",
+                left: `${spyglassPos.x}px`,
+                top: `${spyglassPos.y}px`,
+                width: `${lensRadius * 2 - 40}px`,
+                height: `${lensRadius * 2 - 40}px`,
                 transform: "translate(-50%, -50%)"
               }}
               className="absolute rounded-full border-2 border-amber-400 shadow-[0_0_24px_rgba(245,158,11,0.9)] pointer-events-none z-40"
             >
-              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-amber-500 text-slate-950 px-2 py-0.5 rounded-full shadow">
+              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-amber-500 text-slate-950 px-2 py-0.5 rounded-full shadow whitespace-nowrap">
                 Historical Map Lens
               </div>
             </div>
@@ -318,7 +397,7 @@ export function InteractiveComparisonViewer({
 
         {/* Hotspot Interpretation Popover Card */}
         {activeHotspot && (
-          <div className="absolute bottom-6 right-6 z-50 max-w-sm bg-slate-900/95 backdrop-blur-md border border-slate-700 rounded-xl p-4 shadow-2xl space-y-2.5 text-xs animate-in fade-in slide-in-from-bottom-3 duration-200">
+          <div className="absolute bottom-3 right-3 left-3 sm:left-auto sm:bottom-6 sm:right-6 z-50 sm:max-w-sm bg-slate-900/95 backdrop-blur-md border border-slate-700 rounded-xl p-4 shadow-2xl space-y-2.5 text-xs animate-in fade-in slide-in-from-bottom-3 duration-200">
             <div className="flex items-start justify-between gap-2">
               <div>
                 <div className="flex items-center gap-1.5">
@@ -336,9 +415,10 @@ export function InteractiveComparisonViewer({
               </div>
               <button
                 onClick={() => setActiveHotspot(null)}
-                className="text-slate-400 hover:text-white font-bold text-sm px-1.5 py-0.5"
+                aria-label="Close"
+                className="shrink-0 w-9 h-9 -mt-1 -mr-1 rounded-full bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border border-slate-600 text-white flex items-center justify-center"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             </div>
 
@@ -371,7 +451,7 @@ export function InteractiveComparisonViewer({
       </div>
 
       {/* BOTTOM HOTSPOT QUICK-NAV BAR */}
-      <div className="px-5 py-2.5 bg-slate-900 border-t border-slate-800 flex items-center justify-between z-20 shrink-0 text-xs">
+      <div className="px-3 sm:px-5 py-2.5 bg-slate-900 border-t border-slate-800 flex items-center justify-between z-20 shrink-0 text-xs">
         <div className="flex items-center gap-2 overflow-x-auto py-0.5">
           <span className="text-slate-500 font-semibold text-[11px] shrink-0">
             Archaeological Hotspots:
