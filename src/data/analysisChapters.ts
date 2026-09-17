@@ -163,14 +163,14 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "Engraved and published by D.G. Beers & Co. (Philadelphia, 1877) under Library of Congress Control No. 2005627107. Digitized directly from the uncompressed 31.1 MB master negative TIFF in the Geography & Map Division. It documents post-Civil War land tenure, showing Henry Clay's Ashland (325 a.), John M. Clay's Ashland-on-Tates-Creek, Thomas Hart Clay's Mansfield (896 a.), turnpike toll gates, and the Kentucky University Agricultural & Mechanical College grounds.",
     archaeologicalInsights: [
       "The estate is explicitly labeled 'Formerly Res. of Henry Clay - ASHLAND (325 a.)', then serving as the A&M College campus of Kentucky University under Regent John B. Bowman.",
-      "Shows the authentic 19th-century private turnpike toll gate ('Toll Ho.') along Richmond Pike near modern Chinoe Road, controlling transit into Lexington.",
+      "Shows the 1877 private turnpike toll gate ('Toll Ho.') on Richmond Pike about a kilometre out from Ashland, by the later Shriners Hospital site, controlling transit into Lexington.",
       "Directly depicts John M. Clay's thoroughbred breeding estate ('J.M. Clay') with its carriage drive extending to Tates Creek Pike, one year before his horse Day Star won the 1878 Kentucky Derby.",
       "Documents the circular 1-mile municipal boundary of Lexington and adjacent antebellum estates of Gen. William Preston, Mentelle, and M. Humston."
     ],
     mlModelDetails: {
-      algorithm: "Road-Shape Similarity: Tates Creek Pike and Richmond Pike ink fitted to the modern Tates Creek Rd / Richmond Rd centrelines (chamfer, multi-start)",
-      metrics: "Plate ink sits 8 px (Tates Creek) and 7 px (Richmond) off the modern pavement centrelines; the Richmond Pike Toll Ho. then lands 23 px from the Chinoe junction - house symbols are checks, not inputs (2.1x upscale of a county atlas)",
-      controlPoints: "Tates Creek Pike bends and Richmond Pike heading; checks: Ashland residence, Toll Ho., T.H. Clay Est.",
+      algorithm: "Similarity with scale taken from the plate's printed 1-mile corporate-limit circle (194 px radius = 2.76x); rotation and position from Richmond Pike line-fit and the two Tates Creek Pike bends",
+      metrics: "Richmond Pike ink 16 px and Tates Creek Pike ink ~30 px off the modern centrelines - the plate surveys the upper Tates Creek reach ~240 m too close to Richmond; T.H. Clay Est. (Mansfield) lands 2.43 mi from the courthouse, matching the NRHP nomination",
+      controlPoints: "1-mile circle (scale), Richmond Pike line, Tates Creek Pike elbow and upper bend; checks: Ashland residence, T.H. Clay Est., Toll Ho.",
       confidence: 85
     },
     hotspots: [
@@ -494,7 +494,7 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
     ],
     mlModelDetails: {
       algorithm: "90 deg CCW True-North Rotation + Similarity pinned on the Chinoe and Fontaine junction ticks, with the plat's Richmond Rd line ICP-fitted to the modern centreline",
-      metrics: "Chinoe tick 4 px, Fontaine junction 9 px, Richmond Rd double line 4 px off centreline; Ashland house 14 px and Mansfield 27 px as free checks (RMSE 15.9 px)",
+      metrics: "Chinoe tick 4 px, Fontaine junction 9 px, Richmond Rd double line 4 px off centreline; Ashland house 14 px as a free check; Bean's Mansfield 'C' sits ~500 m from where the 1877 plate and the NRHP distance put the house",
       controlPoints: "Chinoe junction tick, Fontaine junction, Richmond Rd double line; checks: A Ashland, C Mansfield",
       confidence: 84
     },

@@ -56,7 +56,7 @@ CAN = {
     "hchs":           (1055.0, 510.0), # [street] Henry Clay High main building
     "shriners":       (975.0, 290.0),  # [street] former Shriners Hospital building
     "richmond_se":    (1050.0, 327.0), # [street] point on Richmond Rd pavement centreline x = 792 + 0.79*y (was on the frontage road before)
-    "mansfield_1877": (986.0, 302.0),  # [road-fit] T.H. Clay Est. house symbol on Beers Plate 30 under the two-road fit (Tab 2)
+    "mansfield_1877": (1117.0, 467.0), # [road-fit] T.H. Clay Est. house symbol on Beers Plate 30 under the circle-scale fit; 2.43 mi from the courthouse (NRHP: ~2.5 mi)
     "fontaine_richmond": (948.0, 187.0), # [street] Fontaine Rd joins Richmond Rd, 35 px SE of Chinoe (5x mask zoom)
 }
 
@@ -236,18 +236,19 @@ if not os.path.exists(src_path): src_path = os.path.join(MAPS, "1877_beers_fayet
 img = cv2.imread(src_path)
 if img.shape[1] != 2601:   # master TIFF at a different resolution than the JPG the picks were made on
     img = cv2.resize(img, (2601, 3984), interpolation=cv2.INTER_AREA)
-# Road centrelines traced on the plate (scan px) and on the 2024 basemap (canvas px).
-# The similarity below minimises the mean distance from the plate's Tates Creek Pike and
-# Richmond Pike ink to the modern Tates Creek Rd / Richmond Rd centrelines (chamfer fit,
-# multi-start over rotation 6-26 deg and scale 2.2-3.0; converged at 13.7 deg / 2.131x,
-# mean off-road distance 7.4 px Tates Creek, 7.2 px Richmond). Re-derive if you re-trace
-# either road.
-BEERS_TATES_PLATE = [(405,1565),(401,1600),(399,1640),(397,1680),(395,1720),(392,1760),(386,1790),(380,1810),(381,1850),(383,1900),(388,1950),(394,2000)]
+# SCALE is taken from the plate itself: Lexington's 1-mile corporate-limit circle measures 194.1 px radius
+# (algebraic circle fit, 0.7 px residual) and the canvas is 536 px/mile (3.01 m/px), so 1 px on the plate is
+# 2.762 canvas px. Rotation and position come from Richmond Pike ink ICP-projected onto the modern centreline
+# and the two Tates Creek Pike bends (the "767" elbow and the bend above it) pinned to the modern bends.
+# Chamfer-only fits (2.13-2.20x) were wrong: two straight roads let the plate slide and shrink. The plate's
+# upper Tates Creek reach is surveyed ~80 px (240 m) too close to Richmond, so its north end sits ~30 px east
+# of the modern road; that is the atlas, not the fit. Re-derive if you re-trace either road.
+BEERS_TATES_PLATE = [(397,1565),(398,1602),(399,1644),(397,1686),(392,1732),(380,1773),(363,1807),(365,1832),(372,1873),(376,1915),(384,1957),(392,1994)]
 BEERS_RICHMOND_PLATE = [(410,1560),(460,1599),(510,1637),(560,1676),(610,1715),(660,1753),(710,1792),(760,1831),(810,1870)]
 SAT_TATES = [(548,10),(538,60),(528,110),(520,150),(505,195),(490,240),(472,270),(455,300),(435,335),(415,375),(398,415),(388,450),(382,500),(379,550),(380,600),(383,650),(386,700),(389,750),(392,800),(395,850),(398,900)]
 SAT_RICHMOND = [(int(792 + 0.79 * y), y) for y in range(0, 901, 50)]   # pavement centreline from the 5x mask zoom
-M_beers = np.array([[2.070252, -0.5056001, 570.4386],
-                    [0.5056001, 2.070252, -3618.997]])
+M_beers = np.array([[2.696788, -0.5966375, 467.7090],
+                    [0.5966375, 2.696788, -4601.306]])
 # road residuals (plate ink vs modern centrelines) for the telemetry
 lines = np.zeros((CANVAS_H, CANVAS_W), np.uint8)
 cv2.polylines(lines, [np.int32(SAT_TATES)], False, 255, 3); cv2.polylines(lines, [np.int32(SAT_RICHMOND)], False, 255, 3)
@@ -259,15 +260,17 @@ def road_off(trace):
     ok = (Q[:, 0] >= SAT_X0) & (Q[:, 0] < SAT_X1) & (Q[:, 1] >= 0) & (Q[:, 1] < CANVAS_H)
     return float(np.minimum(dtr[Q[ok, 1].astype(int), Q[ok, 0].astype(int)], 40).mean())
 off_t, off_r = road_off(BEERS_TATES_PLATE), road_off(BEERS_RICHMOND_PLATE)
-CP_BEERS = [("Ashland res.", (473, 1645), CAN["mansion"]),
-            ("Richmond Toll Ho.", (578, 1693), CAN["richmond_chinoe"]),
-            ("T.H.Clay/Mansfield", (626, 1741), CAN["mansfield_1877"])]
+CP_BEERS = [("Tates lower bend (767)", (363, 1807), (388.0, 450.0)),
+            ("Tates upper bend",       (397, 1690), (490.0, 240.0)),
+            ("Ashland res. (check)",   (473, 1645), CAN["mansion"]),
+            ("T.H.Clay/Mansfield",     (626, 1741), CAN["mansfield_1877"])]
 lab = [c[0] for c in CP_BEERS]; S = np.float32([c[1] for c in CP_BEERS]); D = np.float32([c[2] for c in CP_BEERS])
 s, th = sim_params(M_beers); print(f"   plate->canvas: scale {s:.3f}, rotation {th:+.2f} deg | road ink off centreline: Tates Creek {off_t:.1f} px, Richmond {off_r:.1f} px")
-record("1877_beers", "Similarity fitted on road shapes: Tates Creek Pike + Richmond Pike ink vs modern centrelines (chamfer, multi-start)", "Zero", S, D, lab, M_beers,
+record("1877_beers", "Similarity: scale from the plate's printed 1-mile circle (194.1 px), rotation/position from Richmond Pike line-ICP and the two Tates Creek Pike bends", "Zero", S, D, lab, M_beers,
        "1877_beers_ashland_aligned.png",
-       f"Road-shape fit; house symbols are checks only. Mean plate-ink distance to modern centreline: Tates Creek {off_t:.1f} px, Richmond {off_r:.1f} px. "
-       "Under this fit the Richmond Pike 'Toll Ho.' lands 23 px from the Chinoe/Richmond junction, settling the toll-house question. County-atlas source upscaled 2.2x; linework is soft.")
+       f"Scale from the printed 1-mile circle; roads fitted, house symbols are checks. Plate-ink distance to modern centreline: Richmond {off_r:.1f} px, Tates Creek {off_t:.1f} px "
+       "(the plate's upper Tates Creek reach is surveyed too close to Richmond). The 1877 Richmond Pike Toll Ho. lands by the former Shriners campus, "
+       "~1 km from Ashland, not at Chinoe. County-atlas source upscaled 2.8x; linework is soft.")
 TELEM["models"]["1877_beers"]["road_residual_px"] = {"tates_creek_pike": round(off_t, 1), "richmond_pike": round(off_r, 1)}
 layer = warp_rgba(img, M_beers)
 cv2.imwrite(os.path.join(OUT, "1877_beers_ashland_aligned.png"), layer)

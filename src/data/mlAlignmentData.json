@@ -27,22 +27,23 @@
       }
     },
     "1877_beers": {
-      "method": "Similarity fitted on road shapes: Tates Creek Pike + Richmond Pike ink vs modern centrelines (chamfer, multi-start)",
+      "method": "Similarity: scale from the plate's printed 1-mile circle (194.1 px), rotation/position from Richmond Pike line-ICP and the two Tates Creek Pike bends",
       "distortion": "Zero",
-      "control_nodes": 3,
-      "rmse_px": 40.85,
-      "max_residual_px": 66.94,
+      "control_nodes": 4,
+      "rmse_px": 48.98,
+      "max_residual_px": 62.81,
       "residuals_px": {
-        "Ashland res.": 66.94,
-        "Richmond Toll Ho.": 22.9,
-        "T.H.Clay/Mansfield": 0.25
+        "Tates lower bend (767)": 43.03,
+        "Tates upper bend": 61.63,
+        "Ashland res. (check)": 62.81,
+        "T.H.Clay/Mansfield": 0.33
       },
-      "confidence": 59.2,
+      "confidence": 51.0,
       "output": "./maps/aligned/1877_beers_ashland_aligned.png",
-      "notes": "Road-shape fit; house symbols are checks only. Mean plate-ink distance to modern centreline: Tates Creek 7.8 px, Richmond 7.1 px. Under this fit the Richmond Pike 'Toll Ho.' lands 23 px from the Chinoe/Richmond junction, settling the toll-house question. County-atlas source upscaled 2.2x; linework is soft.",
+      "notes": "Scale from the printed 1-mile circle; roads fitted, house symbols are checks. Plate-ink distance to modern centreline: Richmond 12.6 px, Tates Creek 18.4 px (the plate's upper Tates Creek reach is surveyed too close to Richmond). The 1877 Richmond Pike Toll Ho. lands by the former Shriners campus, ~1 km from Ashland, not at Chinoe. County-atlas source upscaled 2.8x; linework is soft.",
       "road_residual_px": {
-        "tates_creek_pike": 7.8,
-        "richmond_pike": 7.1
+        "tates_creek_pike": 18.4,
+        "richmond_pike": 12.6
       }
     },
     "1949_aerial": {
@@ -100,15 +101,15 @@
       "method": "90 deg CCW true-north rotation + similarity pinned on the Chinoe & Fontaine junction ticks with Richmond Rd line-ICP",
       "distortion": "Zero (no shear; plat is drawn to scale)",
       "control_nodes": 4,
-      "rmse_px": 15.92,
-      "max_residual_px": 26.86,
+      "rmse_px": 113.06,
+      "max_residual_px": 225.47,
       "residuals_px": {
         "Chinoe tick @Richmond": 4.14,
         "Fontaine jct @Richmond": 8.85,
         "A Ashland house": 14.01,
-        "C Mansfield": 26.86
+        "C Mansfield": 225.47
       },
-      "confidence": 84.1,
+      "confidence": 5.0,
       "output": "./maps/aligned/1800_1900_clay_purchases_aligned.png",
       "notes": "Richmond Rd double line sits 4.3 px off the modern centreline; Ashland house and Mansfield are checks only. Deed list / title block masked out.",
       "road_residual_px": {
@@ -166,8 +167,8 @@
       327.0
     ],
     "mansfield_1877": [
-      986.0,
-      302.0
+      1117.0,
+      467.0
     ],
     "fontaine_richmond": [
       948.0,
@@ -224,8 +225,8 @@
       "pixelY": 36.3
     },
     "mansfield_1877": {
-      "pixelX": 61.6,
-      "pixelY": 33.6
+      "pixelX": 69.8,
+      "pixelY": 51.9
     },
     "fontaine_richmond": {
       "pixelX": 59.2,
