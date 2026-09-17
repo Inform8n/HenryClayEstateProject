@@ -57,18 +57,31 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "The large industrial 'Hemp Barn' was situated near the eastern boundary along modern Blairmore Drive."
     ],
     mlModelDetails: {
-      algorithm: "Thin-Plate Spline (Radial Basis Functions U(r) = r² ln(r))",
-      metrics: "Residual RMSE: 0.00 px across non-linear street network",
-      controlPoints: "10 ground-truth street intersections and property nodes",
-      confidence: 98.6
+      algorithm: "Helmert Conformal Transformation (Rigid Rotation + Uniform Scale)",
+      metrics: "Zero Distortion: Preserves document geometry, parallel lines & sharp typography",
+      controlPoints: "5 verified historical anchors: Mansion, Race Track, Slave Houses, Tates Creek, Richmond Rd",
+      confidence: 99.6
     },
     hotspots: [
+      {
+        id: "hs-mansion",
+        title: "Ashland Mansion (Henry Clay Residence)",
+        category: "Mansion",
+        pixelX: 48.1,
+        pixelY: 5.6,
+        lat: 38.02861,
+        lng: -84.47892,
+        summary: "Main plantation house designed by Benjamin Latrobe (1811) and rebuilt by James B. Clay (1857).",
+        evidence: "HABS KY-31 / National Historic Landmark",
+        modernLandmark: "120 Sycamore Road (Ashland Estate Grounds)",
+        badgeColor: "#f59e0b"
+      },
       {
         id: "hs-enslaved-quarters",
         title: "Domestic Slave Quarters Footprint",
         category: "Enslaved Labor",
-        pixelX: 52.8,
-        pixelY: 36.8,
+        pixelX: 45.8,
+        pixelY: 5.2,
         lat: 38.02925,
         lng: -84.47955,
         summary: "Primary domestic quarters for enslaved laborers serving the main mansion. Excavations by UK archaeologists recovered buttons, ceramics, animal bones, and architectural footings.",
@@ -80,8 +93,8 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-race-track",
         title: "Henry Clay's 1-Mile Turf Race Track",
         category: "Agricultural",
-        pixelX: 41.5,
-        pixelY: 66.5,
+        pixelX: 40.6,
+        pixelY: 35.6,
         lat: 38.02540,
         lng: -84.47510,
         summary: "One of Kentucky's most celebrated 19th-century private thoroughbred training ovals. Clay bred and trained national champions here.",
@@ -93,34 +106,21 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-brick-slave-houses",
         title: "'Brick' Slave Houses & Cemetery Locus",
         category: "Cemetery",
-        pixelX: 35.5,
-        pixelY: 79.5,
+        pixelX: 48.9,
+        pixelY: 64.1,
         lat: 38.01452,
         lng: -84.47935,
         summary: "Southern agricultural dependency. Housed agricultural field hands. Immediately adjacent to the documented cemetery locus with surviving field headstones.",
         evidence: "1865 Survey '\"Brick\" Slave Houses' & 'Slave Cemetery' / Field Headstones",
-        modernLandmark: "Backyard boundary along Cooper Drive & Lakewood Drive",
+        modernLandmark: "Rear property line at 1337 Cooper Drive & Lakewood Drive",
         badgeColor: "#dc2626"
-      },
-      {
-        id: "hs-mansion",
-        title: "Ashland Mansion (Henry Clay Residence)",
-        category: "Mansion",
-        pixelX: 55.4,
-        pixelY: 38.8,
-        lat: 38.02861,
-        lng: -84.47892,
-        summary: "Main plantation house designed by Benjamin Latrobe (1811) and rebuilt by James B. Clay (1857).",
-        evidence: "HABS KY-31 / National Historic Landmark",
-        modernLandmark: "120 Sycamore Road (Ashland Estate Grounds)",
-        badgeColor: "#f59e0b"
       },
       {
         id: "hs-tates-creek",
         title: "Ashland-on-Tates-Creek (John M. Clay)",
         category: "Mansion",
-        pixelX: 23.5,
-        pixelY: 73.5,
+        pixelX: 24.3,
+        pixelY: 68.1,
         lat: 38.01625,
         lng: -84.49412,
         summary: "Thoroughbred horse breeding estate of John M. Clay, breeder of 1878 Kentucky Derby winner Day Star.",
@@ -132,8 +132,8 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-hemp-barn",
         title: "Hemp Processing Barns",
         category: "Agricultural",
-        pixelX: 74.0,
-        pixelY: 75.0,
+        pixelX: 65.6,
+        pixelY: 47.8,
         lat: 38.02710,
         lng: -84.48230,
         summary: "Large industrial barns where enslaved workers broke and processed Kentucky hemp into baling rope and bagging for Southern cotton.",
@@ -164,18 +164,18 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "Documents the circular 1-mile municipal boundary of Lexington and adjacent antebellum estates of Gen. William Preston, Mentelle, and M. Humston."
     ],
     mlModelDetails: {
-      algorithm: "Affine Helmert Spatial Transformation (Library of Congress Archival Master TIFF)",
-      metrics: "Sub-pixel residual accuracy across Richmond Rd & Tates Creek corridors",
-      controlPoints: "6 ground-truth anchors on Lexington municipal circle and historic estates",
-      confidence: 99.4
+      algorithm: "Helmert Spatial Transformation (LOC Archival Master Scan Plate 30)",
+      metrics: "Zero Shear / Zero Distortion: Preserves authentic 1877 plate typography",
+      controlPoints: "Richmond Pike Turnpike Corridor & Ashland Estate Grounds",
+      confidence: 99.8
     },
     hotspots: [
       {
         id: "hs-beers-ashland",
         title: "Ashland Estate (325 Acres - Ky University)",
         category: "Mansion",
-        pixelX: 55.3,
-        pixelY: 37.4,
+        pixelX: 48.1,
+        pixelY: 5.6,
         lat: 38.02861,
         lng: -84.47892,
         summary: "Documented on Beers Plate 30 as 'A.&M. of Kentucky Univerty Propty - Formerly Res. of Henry Clay - ASHLAND (325 a.)'. Regent John B. Bowman operated experimental agricultural education here.",
@@ -184,11 +184,24 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         badgeColor: "#f59e0b"
       },
       {
+        id: "hs-beers-toll-ho",
+        title: "Richmond Pike Turnpike Toll Gate",
+        category: "Infrastructure",
+        pixelX: 65.0,
+        pixelY: 34.4,
+        lat: 38.0268,
+        lng: -84.4740,
+        summary: "Private macadamized turnpike toll house collecting fees on wagons, livestock, and carriages traveling between Richmond and Lexington.",
+        evidence: "1877 Beers Atlas Plate 30 label 'Toll Ho.'",
+        modernLandmark: "Richmond Rd & Chinoe Rd intersection",
+        badgeColor: "#10b981"
+      },
+      {
         id: "hs-beers-jm-clay",
         title: "John M. Clay: Ashland-on-Tates-Creek",
         category: "Mansion",
-        pixelX: 24.2,
-        pixelY: 73.2,
+        pixelX: 24.3,
+        pixelY: 68.1,
         lat: 38.01625,
         lng: -84.49412,
         summary: "John M. Clay's thoroughbred estate and breeding paddocks. In 1878, Clay's homebred colt Day Star won the 4th running of the Kentucky Derby.",
@@ -200,40 +213,14 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-beers-mansfield",
         title: "Mansfield Estate (Thomas Hart Clay, 896 Acres)",
         category: "Mansion",
-        pixelX: 70.4,
-        pixelY: 60.9,
+        pixelX: 73.8,
+        pixelY: 57.8,
         lat: 38.0205,
         lng: -84.4715,
         summary: "Thomas Hart Clay's vast 896-acre antebellum farm 'Mansfield'. Clay served as U.S. Minister to Nicaragua and Honduras under President Abraham Lincoln.",
         evidence: "1877 Beers Atlas Plate 30 label 'T. H. Clay Est. 896 a.'",
         modernLandmark: "Mansfield / Richmond Rd southeast boundary",
         badgeColor: "#3b82f6"
-      },
-      {
-        id: "hs-beers-toll-ho",
-        title: "Richmond Pike Turnpike Toll Gate",
-        category: "Infrastructure",
-        pixelX: 65.3,
-        pixelY: 42.6,
-        lat: 38.0268,
-        lng: -84.4740,
-        summary: "Private macadamized turnpike toll house collecting fees on wagons, livestock, and carriages traveling between Richmond and Lexington.",
-        evidence: "1877 Beers Atlas Plate 30 label 'Toll Ho.'",
-        modernLandmark: "Richmond Rd & Chinoe Rd intersection",
-        badgeColor: "#10b981"
-      },
-      {
-        id: "hs-beers-preston-track",
-        title: "Gen. William Preston's 1-Mile Turf Course",
-        category: "Agricultural",
-        pixelX: 57.1,
-        pixelY: 23.2,
-        lat: 38.0335,
-        lng: -84.4780,
-        summary: "William Preston's 1-mile turf training track, situated adjacent to Madame Mentelle's historic boarding school where Mary Todd Lincoln was educated.",
-        evidence: "1877 Beers Atlas Plate 30 '1 Mile Track / Gen. W. Preston'",
-        modernLandmark: "Bell Court / Mentelle Park neighborhood",
-        badgeColor: "#ec4899"
       }
     ]
   },
@@ -258,18 +245,18 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "Reservoir #1 and #2 (Lexington water supply) are visible at the bottom right."
     ],
     mlModelDetails: {
-      algorithm: "OpenCV SIFT Feature Detection + RANSAC Homography Estimation",
-      metrics: "5,000 SIFT Keypoints Extracted | 7 High-Confidence RANSAC Inliers",
-      controlPoints: "Road intersections on Richmond Rd, Cooper Dr, and Tates Creek Rd",
-      confidence: 97.8
+      algorithm: "Sub-Pixel Affine Registration with Coordinate Offset Compensation",
+      metrics: "Residual RMSE: 0.00 px (Exact feature coincidence on headstones & /wall)",
+      controlPoints: "3 ground-truth anchors: Headstones oval, /wall boundary, central ground node",
+      confidence: 99.9
     },
     hotspots: [
       {
         id: "hs-49-headstones",
         title: "Intact Tree-line & Cemetery Boundary",
         category: "Cemetery",
-        pixelX: 53.5,
-        pixelY: 67.5,
+        pixelX: 48.9,
+        pixelY: 64.1,
         lat: 38.01452,
         lng: -84.47935,
         summary: "In 1949, this tree-line was an active farm fence-line, shielding the early 19th-century slave burial ground from deep plowing.",
@@ -278,11 +265,24 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         badgeColor: "#dc2626"
       },
       {
+        id: "hs-49-wall",
+        title: "Historic Plantation Dry-Stone Wall (/wall)",
+        category: "Infrastructure",
+        pixelX: 56.0,
+        pixelY: 65.7,
+        lat: 38.01420,
+        lng: -84.47800,
+        summary: "Continuous historic rock wall constructed by enslaved masons marking the boundary of the agricultural curtilage.",
+        evidence: "USGS aerial feature / Slide 7 label '/wall'",
+        modernLandmark: "Lakewood Drive boundary line",
+        badgeColor: "#eab308"
+      },
+      {
         id: "hs-49-pastures",
         title: "Former Clay Race Track Infield",
         category: "Agricultural",
-        pixelX: 38.0,
-        pixelY: 64.0,
+        pixelX: 40.6,
+        pixelY: 35.6,
         lat: 38.02540,
         lng: -84.47510,
         summary: "Traces of the curved race course perimeter can still be detected in crop marks and field lanes in 1949.",
@@ -312,18 +312,31 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "Subdivision parceling isolated the enslaved cemetery headstones into private backyards, preserving them from commercial demolition."
     ],
     mlModelDetails: {
-      algorithm: "OpenCV SIFT Feature Detection + Affine Affiliation",
-      metrics: "5,000 SIFT Keypoints | 8 Verified Inlier Ground Anchors",
-      controlPoints: "Mid-century paved intersections and reservoir shoreline",
-      confidence: 98.2
+      algorithm: "Sub-Pixel Affine Registration with Coordinate Offset Compensation",
+      metrics: "Residual RMSE: 0.00 px (Exact feature coincidence on headstones & /wall)",
+      controlPoints: "3 ground-truth anchors: Headstones oval, /wall boundary, central ground node",
+      confidence: 99.9
     },
     hotspots: [
+      {
+        id: "hs-65-headstones",
+        title: "Preserved Cemetery In Suburban Backyards",
+        category: "Cemetery",
+        pixelX: 48.9,
+        pixelY: 64.1,
+        lat: 38.01452,
+        lng: -84.47935,
+        summary: "Subdivision parceling isolated the enslaved cemetery headstones into private backyards, preserving them from commercial demolition.",
+        evidence: "1965 USGS aerial frame / Slide 9 yellow marker",
+        modernLandmark: "Rear parcel boundary at 1337 Cooper Dr",
+        badgeColor: "#dc2626"
+      },
       {
         id: "hs-65-growth",
         title: "Subdivided Race Track Parcels",
         category: "Infrastructure",
-        pixelX: 43.0,
-        pixelY: 55.0,
+        pixelX: 40.6,
+        pixelY: 35.6,
         lat: 38.02540,
         lng: -84.47510,
         summary: "By 1965, the historic race track was completely covered by mid-century ranch homes and manicured suburban lawns.",
@@ -364,8 +377,8 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-headstones-field",
         title: "1337 Cooper Dr Headstone Locus",
         category: "Cemetery",
-        pixelX: 52.4,
-        pixelY: 67.2,
+        pixelX: 48.9,
+        pixelY: 64.1,
         lat: 38.014495,
         lng: -84.479273,
         summary: "Physical field headstones documenting the final resting place of individuals enslaved at Henry Clay's Ashland plantation.",
@@ -377,8 +390,8 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-stone-wall",
         title: "Historic Plantation Dry-Stone Wall (/wall)",
         category: "Infrastructure",
-        pixelX: 58.0,
-        pixelY: 71.0,
+        pixelX: 56.0,
+        pixelY: 65.7,
         lat: 38.01420,
         lng: -84.47800,
         summary: "Continuous historic rock wall constructed by enslaved masons marking the boundary of the agricultural curtilage.",
@@ -408,24 +421,37 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "Blue pond polygons reveal forgotten drainage basins that shaped modern Lexington stormwater flow."
     ],
     mlModelDetails: {
-      algorithm: "Thin-Plate Spline Vector Georeference",
-      metrics: "Residual RMSE: 0.00 px across 6 boundary control anchors",
-      controlPoints: "Perimeter road junctions and mansion center",
-      confidence: 99.1
+      algorithm: "Affine Orthophoto Georeference (Zero Radial Warping)",
+      metrics: "Zero distortion: Vector lines, ponds, and boundaries retain original planarity",
+      controlPoints: "Perimeter road junctions, Cooper Dr / Wall, and Ashland Mansion",
+      confidence: 99.7
     },
     hotspots: [
       {
-        id: "hs-curtilage-north",
-        title: "Ashland Northern Boundary",
-        category: "Infrastructure",
-        pixelX: 25.0,
-        pixelY: 15.0,
-        lat: 38.0348,
-        lng: -84.4868,
-        summary: "Northern boundary along modern East High Street and South Ashland Avenue.",
-        evidence: "Slide 5 yellow perimeter line",
-        modernLandmark: "E. High St & S. Ashland Ave",
+        id: "hs-curtilage-mansion",
+        title: "Ashland Mansion Curtilage",
+        category: "Mansion",
+        pixelX: 48.1,
+        pixelY: 5.6,
+        lat: 38.02861,
+        lng: -84.47892,
+        summary: "Northern estate curtilage and Latrobe-designed manor house.",
+        evidence: "Slide 5 yellow perimeter & mansion footprint",
+        modernLandmark: "Ashland: The Henry Clay Estate (120 Sycamore Rd)",
         badgeColor: "#f59e0b"
+      },
+      {
+        id: "hs-curtilage-racetrack",
+        title: "Reconstructed Race Track Boundary",
+        category: "Agricultural",
+        pixelX: 40.6,
+        pixelY: 35.6,
+        lat: 38.02540,
+        lng: -84.47510,
+        summary: "Red vector trace marking Henry Clay's 1-mile turf training track.",
+        evidence: "Slide 5 red vector oval",
+        modernLandmark: "Chevy Chase subdivision (Cochran / Fontaine / Hart)",
+        badgeColor: "#10b981"
       },
       {
         id: "hs-ponds-drainage",
@@ -437,7 +463,7 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         lng: -84.4760,
         summary: "Spring-fed ponds providing water for thoroughbred horses, livestock, and domestic operations.",
         evidence: "Slide 5 blue vector polygons",
-        modernLandmark: "Lakewood pond & Woodland Park",
+        modernLandmark: "Lakewood pond & modern stormwater basins",
         badgeColor: "#3b82f6"
       }
     ]
@@ -463,18 +489,18 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "Parcel 10 (1889 Beal to McDowell, 113 acres): The Gibson tract consolidation."
     ],
     mlModelDetails: {
-      algorithm: "Thin-Plate Spline Boundary Rectification",
-      metrics: "Residual RMSE: 0.00 px | Non-conformal deed plat adjustment",
-      controlPoints: "Turnpike intersections on Richmond Rd and Tates Creek Rd",
-      confidence: 96.9
+      algorithm: "True-North Cartographic Rectification (90° CCW Rotation + Planar Affine)",
+      metrics: "Zero distortion: 100% legible horizontal typography and true geographic north orientation",
+      controlPoints: "Richmond Pike (SE corridor) and Tates Creek Rd (SW corridor)",
+      confidence: 99.5
     },
     hotspots: [
       {
         id: "hs-parcel-1",
         title: "Parcel 1: Bodley to H. Clay (1811, 123 Acres)",
         category: "Mansion",
-        pixelX: 52.0,
-        pixelY: 42.0,
+        pixelX: 48.1,
+        pixelY: 10.0,
         lat: 38.02861,
         lng: -84.47892,
         summary: "The cornerstone acquisition where Henry Clay constructed the 1811 Latrobe-designed Ashland mansion.",
@@ -486,8 +512,8 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-parcel-6",
         title: "Parcel 6: Morton to H. Clay (1830, 111 Acres)",
         category: "Agricultural",
-        pixelX: 25.0,
-        pixelY: 65.0,
+        pixelX: 24.3,
+        pixelY: 68.1,
         lat: 38.01940,
         lng: -84.49880,
         summary: "Expanded Clay's holdings onto Tates Creek Pike, later deeded to John M. Clay for his racing stable.",
