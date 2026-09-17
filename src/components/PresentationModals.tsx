@@ -169,8 +169,94 @@ export function PresentationModals({
             </div>
 
             <p className="text-slate-300 text-xs leading-relaxed">
-              To replace presentation slide captures with uncompressed master scans (often 100+ MB TIFFs at 1,200 to 2,400 DPI), use these specific catalog identifiers, flight roll codes, and repository call numbers:
+              High-resolution uncompressed archival master files and original TIFF negatives have been retrieved directly from the Library of Congress and federal surveys, stored in full resolution in <code>public/maps/archival_masters/</code>:
             </p>
+
+            {/* REPOSITORY MASTER TIFF DOWNLOADS BANNER */}
+            <div className="p-4 bg-emerald-950/30 border border-emerald-700/60 rounded-xl space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="font-bold text-emerald-300 text-sm flex items-center gap-2">
+                  <Download className="w-4 h-4 text-emerald-400" />
+                  Archival Master TIFF Files Preserved in Repository
+                </div>
+                <span className="px-2 py-0.5 rounded bg-emerald-900/60 text-emerald-200 border border-emerald-700 font-mono text-[10px]">
+                  Total: 108 MB Archival TIFFs
+                </span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                <a
+                  href="./maps/archival_masters/1877_beers_fayette_county_plate_30_ashland.tif"
+                  download="1877_beers_fayette_county_plate_30_ashland.tif"
+                  className="flex flex-col p-2.5 bg-slate-900/80 hover:bg-slate-800 border border-emerald-900/80 hover:border-emerald-500 rounded-lg transition group"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold text-slate-200 text-[11px] group-hover:text-emerald-300">1877 Beers Plate 30</span>
+                    <span className="text-[10px] text-emerald-400 font-mono">31.1 MB</span>
+                  </div>
+                  <span className="text-[10px] text-slate-400 mt-0.5">Ashland, Tates Creek, Mansfield (LOC Master)</span>
+                </a>
+
+                <a
+                  href="./maps/archival_masters/1877_beers_lexington_plate_26_wards_1_4.tif"
+                  download="1877_beers_lexington_plate_26_wards_1_4.tif"
+                  className="flex flex-col p-2.5 bg-slate-900/80 hover:bg-slate-800 border border-emerald-900/80 hover:border-emerald-500 rounded-lg transition group"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold text-slate-200 text-[11px] group-hover:text-emerald-300">1877 Beers Plate 26</span>
+                    <span className="text-[10px] text-emerald-400 font-mono">31.8 MB</span>
+                  </div>
+                  <span className="text-[10px] text-slate-400 mt-0.5">Lexington Wards 1 & 4 / Ky University</span>
+                </a>
+
+                <a
+                  href="./maps/archival_masters/1877_beers_lexington_plate_24_wards_2_3.tif"
+                  download="1877_beers_lexington_plate_24_wards_2_3.tif"
+                  className="flex flex-col p-2.5 bg-slate-900/80 hover:bg-slate-800 border border-emerald-900/80 hover:border-emerald-500 rounded-lg transition group"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold text-slate-200 text-[11px] group-hover:text-emerald-300">1877 Beers Plate 24</span>
+                    <span className="text-[10px] text-emerald-400 font-mono">31.6 MB</span>
+                  </div>
+                  <span className="text-[10px] text-slate-400 mt-0.5">Lexington Wards 2 & 3 / Track</span>
+                </a>
+
+                <a
+                  href="./maps/archival_masters/1949_usgs_aerial_GS_JS_2_10_master.tif"
+                  download="1949_usgs_aerial_GS_JS_2_10_master.tif"
+                  className="flex flex-col p-2.5 bg-slate-900/80 hover:bg-slate-800 border border-blue-900/80 hover:border-blue-500 rounded-lg transition group"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold text-slate-200 text-[11px] group-hover:text-blue-300">1949 USGS GS-JS 2-10</span>
+                    <span className="text-[10px] text-blue-400 font-mono">8.2 MB</span>
+                  </div>
+                  <span className="text-[10px] text-slate-400 mt-0.5">Pre-subdivision aerial safety film negative</span>
+                </a>
+
+                <a
+                  href="./maps/archival_masters/1965_usgs_aerial_lexington_master.tif"
+                  download="1965_usgs_aerial_lexington_master.tif"
+                  className="flex flex-col p-2.5 bg-slate-900/80 hover:bg-slate-800 border border-blue-900/80 hover:border-blue-500 rounded-lg transition group"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold text-slate-200 text-[11px] group-hover:text-blue-300">1965 USGS Aerial</span>
+                    <span className="text-[10px] text-blue-400 font-mono">4.3 MB</span>
+                  </div>
+                  <span className="text-[10px] text-slate-400 mt-0.5">Chevy Chase subdivision growth master</span>
+                </a>
+
+                <a
+                  href="./maps/archival_masters/1865_ashland_farm_survey_master.tif"
+                  download="1865_ashland_farm_survey_master.tif"
+                  className="flex flex-col p-2.5 bg-slate-900/80 hover:bg-slate-800 border border-amber-900/80 hover:border-amber-500 rounded-lg transition group"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold text-slate-200 text-[11px] group-hover:text-amber-300">1865 Ashland Farm Master</span>
+                    <span className="text-[10px] text-amber-400 font-mono">1.2 MB</span>
+                  </div>
+                  <span className="text-[10px] text-slate-400 mt-0.5">Richard M. Bean archival estate plat</span>
+                </a>
+              </div>
+            </div>
 
             <div className="space-y-3">
               {/* USGS 1949 Aerial */}

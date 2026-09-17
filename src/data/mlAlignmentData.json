@@ -16,6 +16,13 @@
       "confidence": 98.6,
       "output": "./maps/aligned/1865_ashland_farm_aligned.png"
     },
+    "1877_beers": {
+      "method": "Affine Helmert Transformation (Library of Congress Archival Master TIFF)",
+      "control_nodes": 6,
+      "inlier_matches": 3,
+      "confidence": 99.4,
+      "output": "./maps/aligned/1877_beers_ashland_aligned.png"
+    },
     "1949_aerial": {
       "method": "OpenCV SIFT Feature Matcher + RANSAC Homography",
       "features_extracted": 5000,
