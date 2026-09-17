@@ -239,19 +239,19 @@ if not os.path.exists(src_path): src_path = os.path.join(MAPS, "1877_beers_fayet
 img = cv2.imread(src_path)
 if img.shape[1] != 2601:   # master TIFF at a different resolution than the JPG the picks were made on
     img = cv2.resize(img, (2601, 3984), interpolation=cv2.INTER_AREA)
-# SCALE is taken from the plate itself: Lexington's 1-mile corporate-limit circle measures 194.1 px radius
-# (algebraic circle fit, 0.7 px residual) and the canvas is 536 px/mile (3.01 m/px), so 1 px on the plate is
-# 2.762 canvas px. Rotation and position come from Richmond Pike ink ICP-projected onto the modern centreline
-# and the two Tates Creek Pike bends (the "767" elbow and the bend above it) pinned to the modern bends.
-# Chamfer-only fits (2.13-2.20x) were wrong: two straight roads let the plate slide and shrink. The plate's
-# upper Tates Creek reach is surveyed ~80 px (240 m) too close to Richmond, so its north end sits ~30 px east
-# of the modern road; that is the atlas, not the fit. Re-derive if you re-trace either road.
+# Global AFFINE (not a similarity): principal scales 2.83x / 2.47x with a +7.4 deg skew. The plate's printed 1-mile
+# corporate-limit circle (194.1 px radius, 0.7 px fit; canvas 536 px/mile) fixes the nominal scale at 2.76x; the
+# plate surveys Tates Creek Pike's upper reach ~240 m too close to Richmond Pike, so a rigid fit leaves one road
+# ~30 px off wherever the other is on. The affine absorbs that with a small global shear - no local warping.
+# Fitted by ICP of the plate's Richmond Pike and Tates Creek Pike ink onto the modern centrelines (Tates Creek
+# traced through the satellite road mask), the "767" elbow softly pinned to the lower Tates Creek bend, and a
+# regulariser toward the rigid circle-scale solution. Elbow lands 6 px off the road, upper bend 19 px.
 BEERS_TATES_PLATE = [(397,1565),(398,1602),(399,1644),(397,1686),(392,1732),(380,1773),(363,1807),(365,1832),(372,1873),(376,1915),(384,1957),(392,1994)]
 BEERS_RICHMOND_PLATE = [(410,1560),(460,1599),(510,1637),(560,1676),(610,1715),(660,1753),(710,1792),(760,1831),(810,1870)]
-SAT_TATES = [(548,10),(538,60),(528,110),(520,150),(505,195),(490,240),(472,270),(455,300),(435,335),(415,375),(398,415),(388,450),(382,500),(379,550),(380,600),(383,650),(386,700),(389,750),(392,800),(395,850),(398,900)]
+SAT_TATES = [(511,3),(515,28),(511,53),(509,78),(506,103),(501,128),(497,153),(492,178),(487,203),(491,228),(480,249),(472,274),(458,298),(443,323),(431,348),(417,373),(404,398),(391,423),(388,448),(390,473),(391,498),(391,523),(390,548),(389,573),(378,598),(375,623),(372,648),(378,673),(379,698),(380,723),(385,760),(392,800),(395,850),(398,900)]  # road-mask path
 SAT_RICHMOND = [(int(792 + 0.79 * y), y) for y in range(0, 901, 50)]   # pavement centreline from the 5x mask zoom
-M_beers = np.array([[2.696788, -0.5966375, 467.7090],
-                    [0.5966375, 2.696788, -4601.306]])
+M_beers = np.array([[2.619384, -0.3638068, 90.30883],
+                    [0.7270789, 2.564937, -4465.672]])
 # road residuals (plate ink vs modern centrelines) for the telemetry
 lines = np.zeros((CANVAS_H, CANVAS_W), np.uint8)
 cv2.polylines(lines, [np.int32(SAT_TATES)], False, 255, 3); cv2.polylines(lines, [np.int32(SAT_RICHMOND)], False, 255, 3)
@@ -268,12 +268,13 @@ CP_BEERS = [("Tates lower bend (767)", (363, 1807), (388.0, 450.0)),
             ("Ashland res. (check)",   (473, 1645), CAN["mansion"]),
             ("T.H.Clay/Mansfield",     (626, 1741), CAN["mansfield_1877"])]
 lab = [c[0] for c in CP_BEERS]; S = np.float32([c[1] for c in CP_BEERS]); D = np.float32([c[2] for c in CP_BEERS])
-s, th = sim_params(M_beers); print(f"   plate->canvas: scale {s:.3f}, rotation {th:+.2f} deg | road ink off centreline: Tates Creek {off_t:.1f} px, Richmond {off_r:.1f} px")
-record("1877_beers", "Similarity: scale from the plate's printed 1-mile circle (194.1 px), rotation/position from Richmond Pike line-ICP and the two Tates Creek Pike bends", "Zero", S, D, lab, M_beers,
+_sv = np.linalg.svd(M_beers[:, :2], compute_uv=False); _skew = np.degrees(np.arctan2(M_beers[1, 0], M_beers[0, 0]) - np.arctan2(-M_beers[0, 1], M_beers[1, 1]))
+print(f"   plate->canvas: affine, principal scales {_sv[0]:.3f}/{_sv[1]:.3f}, skew {_skew:+.1f} deg | road ink off centreline: Tates Creek {off_t:.1f} px, Richmond {off_r:.1f} px")
+record("1877_beers", "Global affine (+7.4 deg skew): Richmond Pike and Tates Creek Pike ink ICP-fitted to the modern centrelines, scale anchored by the plate's printed 1-mile circle", "Mild global shear (7.4 deg) absorbing the plate's road-angle survey error; no local warping", S, D, lab, M_beers,
        "1877_beers_ashland_aligned.png",
        f"Scale from the printed 1-mile circle; roads fitted, house symbols are checks. Plate-ink distance to modern centreline: Richmond {off_r:.1f} px, Tates Creek {off_t:.1f} px "
-       "(the plate's upper Tates Creek reach is surveyed too close to Richmond). The 1877 Richmond Pike Toll Ho. lands by the former Shriners campus, "
-       "~1 km from Ashland, not at Chinoe. County-atlas source upscaled 2.8x; linework is soft.")
+       "(label ink inside the sampling tubes inflates both figures; the double lines themselves sit within ~10 px). The 1877 Richmond Pike Toll Ho. lands by the former Shriners campus, "
+       "~1 km from Ashland, not at Chinoe. County-atlas source upscaled ~2.7x; linework is soft.")
 TELEM["models"]["1877_beers"]["road_residual_px"] = {"tates_creek_pike": round(off_t, 1), "richmond_pike": round(off_r, 1)}
 layer = warp_rgba(img, M_beers)
 cv2.imwrite(os.path.join(OUT, "1877_beers_ashland_aligned.png"), layer)

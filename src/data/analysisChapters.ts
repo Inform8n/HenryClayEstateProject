@@ -168,9 +168,9 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "Documents the circular 1-mile municipal boundary of Lexington and adjacent antebellum estates of Gen. William Preston, Mentelle, and M. Humston."
     ],
     mlModelDetails: {
-      algorithm: "Similarity with scale taken from the plate's printed 1-mile corporate-limit circle (194 px radius = 2.76x); rotation and position from Richmond Pike line-fit and the two Tates Creek Pike bends",
-      metrics: "Richmond Pike ink 16 px and Tates Creek Pike ink ~30 px off the modern centrelines - the plate surveys the upper Tates Creek reach ~240 m too close to Richmond; T.H. Clay Est. (Mansfield) lands 2.43 mi from the courthouse, matching the NRHP nomination",
-      controlPoints: "1-mile circle (scale), Richmond Pike line, Tates Creek Pike elbow and upper bend; checks: Ashland residence, T.H. Clay Est., Toll Ho.",
+      algorithm: "Global affine with a 7.4 deg skew: Richmond Pike and Tates Creek Pike ink fitted onto the modern centrelines (Tates Creek traced through the satellite road mask), scale anchored by the plate's printed 1-mile corporate-limit circle (194 px radius); no local warping",
+      metrics: "Both pikes now sit on their modern roads (Tates Creek elbow 6 px, upper bend 19 px off the road); the 7.4 deg shear absorbs the plate's survey error in the angle between the two pikes. T.H. Clay Est. (Mansfield) lands ~2.4 mi from the courthouse, matching the NRHP nomination",
+      controlPoints: "1-mile circle (scale), Richmond Pike line, Tates Creek Pike line and elbow; checks: Ashland residence, T.H. Clay Est., Toll Ho.",
       confidence: 85
     },
     hotspots: [

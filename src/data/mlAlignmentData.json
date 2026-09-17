@@ -28,23 +28,23 @@
       }
     },
     "1877_beers": {
-      "method": "Similarity: scale from the plate's printed 1-mile circle (194.1 px), rotation/position from Richmond Pike line-ICP and the two Tates Creek Pike bends",
-      "distortion": "Zero",
+      "method": "Global affine (+7.4 deg skew): Richmond Pike and Tates Creek Pike ink ICP-fitted to the modern centrelines, scale anchored by the plate's printed 1-mile circle",
+      "distortion": "Mild global shear (7.4 deg) absorbing the plate's road-angle survey error; no local warping",
       "control_nodes": 4,
-      "rmse_px": 48.98,
-      "max_residual_px": 62.81,
+      "rmse_px": 55.13,
+      "max_residual_px": 86.1,
       "residuals_px": {
-        "Tates lower bend (767)": 43.03,
-        "Tates upper bend": 61.63,
-        "Ashland res. (check)": 62.81,
-        "T.H.Clay/Mansfield": 0.33
+        "Tates lower bend (767)": 17.43,
+        "Tates upper bend": 86.1,
+        "Ashland res. (check)": 62.3,
+        "T.H.Clay/Mansfield": 23.6
       },
-      "confidence": 51.0,
+      "confidence": 44.9,
       "output": "./maps/aligned/1877_beers_ashland_aligned.png",
-      "notes": "Scale from the printed 1-mile circle; roads fitted, house symbols are checks. Plate-ink distance to modern centreline: Richmond 12.6 px, Tates Creek 18.4 px (the plate's upper Tates Creek reach is surveyed too close to Richmond). The 1877 Richmond Pike Toll Ho. lands by the former Shriners campus, ~1 km from Ashland, not at Chinoe. County-atlas source upscaled 2.8x; linework is soft.",
+      "notes": "Scale from the printed 1-mile circle; roads fitted, house symbols are checks. Plate-ink distance to modern centreline: Richmond 13.9 px, Tates Creek 10.1 px (label ink inside the sampling tubes inflates both figures; the double lines themselves sit within ~10 px). The 1877 Richmond Pike Toll Ho. lands by the former Shriners campus, ~1 km from Ashland, not at Chinoe. County-atlas source upscaled ~2.7x; linework is soft.",
       "road_residual_px": {
-        "tates_creek_pike": 18.4,
-        "richmond_pike": 12.6
+        "tates_creek_pike": 10.1,
+        "richmond_pike": 13.9
       }
     },
     "1949_aerial": {
