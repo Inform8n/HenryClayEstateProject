@@ -6,23 +6,24 @@
   },
   "models": {
     "1865_farm": {
-      "method": "Rigid similarity fitted on road shapes: Richmond Rd + Tates Creek Pike ink vs modern centrelines (chamfer, multi-start)",
+      "method": "Rigid similarity: Richmond Rd + Tates Creek Pike ink line-fitted to modern centrelines, pinned by the Tates Creek bend, Richmond toll house and Ashland house",
       "distortion": "Zero (single rotation + uniform scale; no local warping)",
-      "control_nodes": 4,
-      "rmse_px": 26.71,
-      "max_residual_px": 42.42,
+      "control_nodes": 5,
+      "rmse_px": 45.79,
+      "max_residual_px": 66.93,
       "residuals_px": {
-        "Ashland house": 19.84,
-        "Richmond toll house": 18.75,
-        "Morton Jr High": 42.42,
-        "Cooper Dr @Chinoe dot": 17.55
+        "Tates Creek bend @Morton": 32.95,
+        "Richmond toll house": 26.84,
+        "Ashland house": 44.79,
+        "Morton Jr High (check)": 46.82,
+        "Cooper Dr @Chinoe (check)": 66.93
       },
-      "confidence": 73.3,
+      "confidence": 54.2,
       "output": "./maps/aligned/1865_ashland_farm_aligned.png",
-      "notes": "Road-shape fit; the listed points are checks only. Sheet road ink off modern centreline: Richmond 3.6 px, Tates Creek 2.8 px. The hand-drawn 1865 features (race track, cemetery, ponds, hemp barn) sit where the sheet places them relative to its street base and are not forced onto modern finds.",
+      "notes": "Road-shape + junction fit (first three points are inputs, the rest checks). Sheet road ink off modern centreline: Richmond 3.7 px, Tates Creek 3.6 px. The hand-drawn 1865 features (race track, cemetery, ponds, hemp barn) sit where the sheet places them relative to its street base and are not forced onto modern finds.",
       "road_residual_px": {
-        "richmond_rd": 3.6,
-        "tates_creek_rd": 2.8
+        "richmond_rd": 3.7,
+        "tates_creek_rd": 3.6
       }
     },
     "1877_beers": {

@@ -186,14 +186,14 @@ print("=" * 70); print(" Henry Clay Estate - alignment v2 (street-geometry contr
 # ==========================================================================
 print("\n--- [Tab 1/5] 1865 Ashland Farm sheet (rigid two-road shape fit) ---")
 img = cv2.imread(os.path.join(MAPS, "1865_ashland_farm_raw.png"))
-# Similarity fitted on ROAD SHAPES: the sheet's heavy Richmond Rd ('MAIN ST') line and its west boundary
-# along Tates Creek Pike, chamfer-fitted to the modern centrelines (multi-start over rotation -14..12 deg,
-# scale 0.9..1.9), with the Ashland house and the Richmond toll house as soft checks. Converged at
-# +4.1 deg / 1.256x: Richmond ink 3.8 px, Tates Creek ink 2.7 px off centreline. No local warping.
-# (The earlier 1.59x fits were driven by bad point targets - school building centre, estate POI badge,
-#  sketched cemetery pinned to the headstones - not by the sheet.)
-M1865 = np.array([[1.252935, -0.08906864, 437.4679],
-                  [0.08906864, 1.252935, -349.2081]])
+# Similarity fitted on ROAD SHAPES + junctions: the sheet's Richmond Rd ('MAIN ST') line and its west boundary
+# along Tates Creek Pike are ICP-projected onto the modern centrelines (weight 0.6 per ink sample), with three
+# point pairs: the Tates Creek bend at Morton Jr High -> the bend by the T badge (490,240) [w2], the Richmond
+# toll house -> Chinoe junction [w2], the Ashland house -> estate badge [w1]. Converged at +5.0 deg / 1.342x:
+# Richmond ink 5.4 px, Tates Creek ink 5.8 px; bend 33 px, toll 27 px, Ashland 45 px. Morton Jr High lands on
+# the T badge as a free check. Roads alone leave the along-road position ambiguous; the junctions break the tie.
+M1865 = np.array([[1.336771, -0.1174308, 434.4615],
+                  [0.1174308, 1.336771, -362.9056]])
 SHEET_RICHMOND = [(150,90),(200,150),(258,216),(317,266),(367,324),(400,374),(437,412),(500,466),(548,510)]
 SHEET_TATES = [(104,258),(100,300),(93,360),(86,420),(79,460),(60,495),(45,525),(33,549)]
 SAT_TATES_1865 = [(548,10),(538,60),(528,110),(520,150),(505,195),(490,240),(472,270),(455,300),(435,335),(415,375),(398,415),(388,450),(382,500),(379,550),(380,600),(383,650),(386,700),(389,750),(392,800),(395,850),(398,900)]
@@ -208,17 +208,18 @@ def _sheet_road_off(trace):
     ok = (Q[:, 0] >= SAT_X0) & (Q[:, 0] < SAT_X1) & (Q[:, 1] >= 0) & (Q[:, 1] < CANVAS_H)
     return float(np.minimum(_dt[Q[ok, 1].astype(int), Q[ok, 0].astype(int)], 40).mean())
 off_r, off_t = _sheet_road_off(SHEET_RICHMOND), _sheet_road_off(SHEET_TATES)
-CP_1865 = [  # checks only (sheet px on 1865_ashland_farm_raw.png [548x721] -> canvas anchor)
-    ("Ashland house",          (305, 313), CAN["mansion"]),
-    ("Richmond toll house",    (401, 376), CAN["richmond_chinoe"]),
-    ("Morton Jr High",         (62, 449),  CAN["tates_cooper_T"]),
-    ("Cooper Dr @Chinoe dot",  (277, 665), CAN["cooper_chinoe"]),
+CP_1865 = [  # (sheet px on 1865_ashland_farm_raw.png [548x721] -> canvas anchor); first three are fit inputs
+    ("Tates Creek bend @Morton", (86, 420),  (490.0, 240.0)),
+    ("Richmond toll house",      (401, 376), CAN["richmond_chinoe"]),
+    ("Ashland house",            (305, 313), CAN["mansion"]),
+    ("Morton Jr High (check)",   (62, 449),  CAN["tates_cooper_T"]),
+    ("Cooper Dr @Chinoe (check)",(277, 665), CAN["cooper_chinoe"]),
 ]
 lab = [c[0] for c in CP_1865]; S = np.float32([c[1] for c in CP_1865]); D = np.float32([c[2] for c in CP_1865])
 s, th = sim_params(M1865); print(f"   sheet->canvas: scale {s:.3f}, rotation {th:+.2f} deg | road ink off centreline: Richmond {off_r:.1f} px, Tates Creek {off_t:.1f} px")
-record("1865_farm", "Rigid similarity fitted on road shapes: Richmond Rd + Tates Creek Pike ink vs modern centrelines (chamfer, multi-start)", "Zero (single rotation + uniform scale; no local warping)",
+record("1865_farm", "Rigid similarity: Richmond Rd + Tates Creek Pike ink line-fitted to modern centrelines, pinned by the Tates Creek bend, Richmond toll house and Ashland house", "Zero (single rotation + uniform scale; no local warping)",
        S, D, lab, M1865, "1865_ashland_farm_aligned.png",
-       f"Road-shape fit; the listed points are checks only. Sheet road ink off modern centreline: Richmond {off_r:.1f} px, Tates Creek {off_t:.1f} px. "
+       f"Road-shape + junction fit (first three points are inputs, the rest checks). Sheet road ink off modern centreline: Richmond {off_r:.1f} px, Tates Creek {off_t:.1f} px. "
        "The hand-drawn 1865 features (race track, cemetery, ponds, hemp barn) sit where the sheet places them relative to its street base and are not forced onto modern finds.")
 TELEM["models"]["1865_farm"]["road_residual_px"] = {"richmond_rd": round(off_r, 1), "tates_creek_rd": round(off_t, 1)}
 layer = warp_rgba(img, M1865)

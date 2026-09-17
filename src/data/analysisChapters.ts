@@ -61,9 +61,9 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "The large industrial 'Hemp Barn' was situated near the eastern boundary along modern Blairmore Drive."
     ],
     mlModelDetails: {
-      algorithm: "Rigid Road-Shape Similarity: the sheet's Richmond Rd and Tates Creek Pike ink fitted to the modern centrelines (single rotation + uniform scale, no local warping)",
-      metrics: "Sheet road ink 4 px (Richmond) and 3 px (Tates Creek) off the modern centrelines at 1.256x / +4.1 deg; Ashland house 20 px, Richmond toll house 19 px and Cooper Dr at the Chinoe dot 18 px as free checks",
-      controlPoints: "Richmond Rd corridor and Tates Creek Pike; checks: Ashland house, Richmond toll house, Morton Jr High, Cooper Dr/Chinoe",
+      algorithm: "Rigid Road-Shape Similarity: the sheet's Richmond Rd and Tates Creek Pike ink line-fitted to the modern centrelines, pinned by the Tates Creek bend at Morton, the Richmond toll house and the Ashland house (single rotation + uniform scale, no local warping)",
+      metrics: "Road ink 5 px (Richmond) and 6 px (Tates Creek) off the modern centrelines at 1.342x / +5.0 deg; Tates Creek bend 33 px, Richmond toll house 27 px, Ashland 45 px; Morton Jr High lands on the school as a free check",
+      controlPoints: "Richmond Rd and Tates Creek Pike ink, Tates Creek bend, Richmond toll house, Ashland house; checks: Morton Jr High, Cooper Dr/Chinoe",
       confidence: 85
     },
     hotspots: [
@@ -372,7 +372,7 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
     ],
     mlModelDetails: {
       algorithm: "Field geolocation by B.P. Thompson; pin placed at the centroid of his Slide 7 headstones marker (782.7, 577.5)",
-      metrics: "With the sheet's streets registered, its hand-drawn Slave Cemetery symbol lands roughly 270 px northwest of the headstones (Indian Mound area) - the 1865 sketch, not the street base, carries that offset",
+      metrics: "With the sheet's streets registered, its hand-drawn Slave Cemetery symbol lands roughly 250 px northwest of the headstones (Indian Mound area) - the 1865 sketch, not the street base, carries that offset",
       controlPoints: "1337 Cooper Drive parcel boundary and dry-stone wall alignment",
       confidence: 95
     },
