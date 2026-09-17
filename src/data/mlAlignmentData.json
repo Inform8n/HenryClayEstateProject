@@ -6,50 +6,229 @@
   },
   "models": {
     "1865_farm": {
-      "method": "Helmert Conformal Transformation (Rigid Rotation + Uniform Scale)",
-      "distortion": "Zero (Preserves angles, parallel lines, and document geometry)",
-      "control_nodes": 5,
-      "rmse_px": 79.08,
-      "confidence": 99.6,
-      "output": "./maps/aligned/1865_ashland_farm_aligned.png"
+      "method": "Rigid similarity fitted on road shapes: Richmond Rd + Tates Creek Pike ink vs modern centrelines (chamfer, multi-start)",
+      "distortion": "Zero (single rotation + uniform scale; no local warping)",
+      "control_nodes": 4,
+      "rmse_px": 26.71,
+      "max_residual_px": 42.42,
+      "residuals_px": {
+        "Ashland house": 19.84,
+        "Richmond toll house": 18.75,
+        "Morton Jr High": 42.42,
+        "Cooper Dr @Chinoe dot": 17.55
+      },
+      "confidence": 73.3,
+      "output": "./maps/aligned/1865_ashland_farm_aligned.png",
+      "notes": "Road-shape fit; the listed points are checks only. Sheet road ink off modern centreline: Richmond 3.6 px, Tates Creek 2.8 px. The hand-drawn 1865 features (race track, cemetery, ponds, hemp barn) sit where the sheet places them relative to its street base and are not forced onto modern finds.",
+      "road_residual_px": {
+        "richmond_rd": 3.6,
+        "tates_creek_rd": 2.8
+      }
     },
     "1877_beers": {
-      "method": "Helmert Spatial Transformation (LOC Archival Master Scan Plate 30)",
-      "distortion": "Zero (Direct corridor alignment along Richmond Pike)",
-      "control_nodes": 2,
-      "confidence": 99.8,
-      "output": "./maps/aligned/1877_beers_ashland_aligned.png"
+      "method": "Similarity fitted on road shapes: Tates Creek Pike + Richmond Pike ink vs modern centrelines (chamfer, multi-start)",
+      "distortion": "Zero",
+      "control_nodes": 3,
+      "rmse_px": 40.85,
+      "max_residual_px": 66.94,
+      "residuals_px": {
+        "Ashland res.": 66.94,
+        "Richmond Toll Ho.": 22.9,
+        "T.H.Clay/Mansfield": 0.25
+      },
+      "confidence": 59.2,
+      "output": "./maps/aligned/1877_beers_ashland_aligned.png",
+      "notes": "Road-shape fit; house symbols are checks only. Mean plate-ink distance to modern centreline: Tates Creek 7.8 px, Richmond 7.1 px. Under this fit the Richmond Pike 'Toll Ho.' lands 23 px from the Chinoe/Richmond junction, settling the toll-house question. County-atlas source upscaled 2.2x; linework is soft.",
+      "road_residual_px": {
+        "tates_creek_pike": 7.8,
+        "richmond_pike": 7.1
+      }
     },
     "1949_aerial": {
-      "method": "Sub-Pixel Affine Registration with Coordinate Offset Compensation",
-      "distortion": "Zero (1:1 feature coincidence across 1949 fence-lines & 2024 grid)",
-      "control_nodes": 3,
-      "rmse_px": 0.0,
-      "confidence": 99.9,
-      "output": "./maps/aligned/1949_usgs_aerial_aligned.png"
+      "method": "Least-squares similarity on all 5 Thompson markers (oval, /wall, 3 dots)",
+      "distortion": "Zero",
+      "control_nodes": 5,
+      "rmse_px": 6.32,
+      "max_residual_px": 11.38,
+      "residuals_px": {
+        "oval": 11.38,
+        "slash": 7.56,
+        "chinoe": 2.54,
+        "tates": 1.99,
+        "lakewood": 1.56
+      },
+      "confidence": 93.3,
+      "output": "./maps/aligned/1949_usgs_aerial_aligned.png",
+      "notes": "Warped from the clean 1600x900 raw frame, not the slide render; film border masked transparent."
     },
     "1965_aerial": {
-      "method": "Sub-Pixel Affine Registration with Coordinate Offset Compensation",
-      "distortion": "Zero (1:1 feature coincidence across mid-century streets & 2024 grid)",
-      "control_nodes": 3,
-      "rmse_px": 0.0,
-      "confidence": 99.9,
-      "output": "./maps/aligned/1965_usgs_aerial_aligned.png"
+      "method": "Least-squares similarity on all 5 Thompson markers (oval, /wall, 3 dots)",
+      "distortion": "Zero",
+      "control_nodes": 5,
+      "rmse_px": 18.76,
+      "max_residual_px": 31.97,
+      "residuals_px": {
+        "oval": 4.01,
+        "slash": 31.97,
+        "chinoe": 17.28,
+        "tates": 6.89,
+        "lakewood": 19.38
+      },
+      "confidence": 81.2,
+      "output": "./maps/aligned/1965_usgs_aerial_aligned.png",
+      "notes": "Slide render used (photo was cropped when placed in PowerPoint); non-photo slide area masked transparent."
     },
     "master_recon": {
-      "method": "Affine Orthophoto Georeference",
-      "distortion": "Zero (Direct orthophoto registration without radial warping)",
-      "control_nodes": 3,
-      "confidence": 99.7,
-      "output": "./maps/aligned/master_archaeology_recon_aligned.png"
+      "method": "Planar homography (least squares) on 5 building/site correspondences",
+      "distortion": "Perspective rectification of an oblique Google Earth view",
+      "control_nodes": 5,
+      "rmse_px": 23.24,
+      "max_residual_px": 34.67,
+      "residuals_px": {
+        "Ashland mansion": 11.37,
+        "Shriners bldg": 34.67,
+        "Henry Clay High": 31.42,
+        "Morton Jr High": 13.26,
+        "1337 Cooper box": 14.4
+      },
+      "confidence": 76.8,
+      "output": "./maps/aligned/master_archaeology_recon_aligned.png",
+      "notes": "Slide 5 is a tilted 3D view (Idle Hour implies +15 deg, reservoir +34 deg under a similarity), so an affine cannot fit it. Add 3-4 road-intersection pairs to tighten."
     },
     "1800_1900_purchases": {
-      "method": "True-North Cartographic Rectification (90 deg CCW) + Planar Affine",
-      "distortion": "Zero (Rectified cadastral plat with legible horizontal typography)",
-      "control_nodes": 3,
-      "rmse_px": 0.0,
-      "confidence": 99.5,
-      "output": "./maps/aligned/1800_1900_clay_purchases_aligned.png"
+      "method": "90 deg CCW true-north rotation + similarity pinned on the Chinoe & Fontaine junction ticks with Richmond Rd line-ICP",
+      "distortion": "Zero (no shear; plat is drawn to scale)",
+      "control_nodes": 4,
+      "rmse_px": 15.92,
+      "max_residual_px": 26.86,
+      "residuals_px": {
+        "Chinoe tick @Richmond": 4.14,
+        "Fontaine jct @Richmond": 8.85,
+        "A Ashland house": 14.01,
+        "C Mansfield": 26.86
+      },
+      "confidence": 84.1,
+      "output": "./maps/aligned/1800_1900_clay_purchases_aligned.png",
+      "notes": "Richmond Rd double line sits 4.3 px off the modern centreline; Ashland house and Mansfield are checks only. Deed list / title block masked out.",
+      "road_residual_px": {
+        "richmond_rd": 4.3
+      }
+    }
+  },
+  "canvas_anchors": {
+    "mansion": [
+      777.5,
+      56.3
+    ],
+    "headstones": [
+      782.7,
+      577.5
+    ],
+    "wall_slash": [
+      873.1,
+      584.0
+    ],
+    "tates_cooper_T": [
+      511.3,
+      241.1
+    ],
+    "cooper_chinoe": [
+      719.8,
+      492.0
+    ],
+    "tates_alumni": [
+      388.4,
+      613.0
+    ],
+    "lakewood_pond": [
+      847.3,
+      728.3
+    ],
+    "richmond_chinoe": [
+      925.0,
+      160.0
+    ],
+    "tates_cooper_x": [
+      455.0,
+      278.0
+    ],
+    "hchs": [
+      1055.0,
+      510.0
+    ],
+    "shriners": [
+      975.0,
+      290.0
+    ],
+    "richmond_se": [
+      1050.0,
+      327.0
+    ],
+    "mansfield_1877": [
+      986.0,
+      302.0
+    ],
+    "fontaine_richmond": [
+      948.0,
+      187.0
+    ]
+  },
+  "hotspot_pins_pct": {
+    "mansion": {
+      "pixelX": 48.6,
+      "pixelY": 6.3
+    },
+    "headstones": {
+      "pixelX": 48.9,
+      "pixelY": 64.2
+    },
+    "wall_slash": {
+      "pixelX": 54.6,
+      "pixelY": 64.9
+    },
+    "tates_cooper_T": {
+      "pixelX": 32.0,
+      "pixelY": 26.8
+    },
+    "cooper_chinoe": {
+      "pixelX": 45.0,
+      "pixelY": 54.7
+    },
+    "tates_alumni": {
+      "pixelX": 24.3,
+      "pixelY": 68.1
+    },
+    "lakewood_pond": {
+      "pixelX": 53.0,
+      "pixelY": 80.9
+    },
+    "richmond_chinoe": {
+      "pixelX": 57.8,
+      "pixelY": 17.8
+    },
+    "tates_cooper_x": {
+      "pixelX": 28.4,
+      "pixelY": 30.9
+    },
+    "hchs": {
+      "pixelX": 65.9,
+      "pixelY": 56.7
+    },
+    "shriners": {
+      "pixelX": 60.9,
+      "pixelY": 32.2
+    },
+    "richmond_se": {
+      "pixelX": 65.6,
+      "pixelY": 36.3
+    },
+    "mansfield_1877": {
+      "pixelX": 61.6,
+      "pixelY": 33.6
+    },
+    "fontaine_richmond": {
+      "pixelX": 59.2,
+      "pixelY": 20.8
     }
   }
 }

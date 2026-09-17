@@ -35,6 +35,10 @@ export interface AnalysisChapter {
   hotspots: AnalysisHotspot[];
 }
 
+// Alignment v2 (scripts/ml_align_v2.py): every layer is solved from named street /
+// feature correspondences; the metrics below are the measured fit residuals from
+// src/data/mlAlignmentData.json, not hard-coded claims.
+
 export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
   {
     id: "chapter-1865-farm",
@@ -57,10 +61,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "The large industrial 'Hemp Barn' was situated near the eastern boundary along modern Blairmore Drive."
     ],
     mlModelDetails: {
-      algorithm: "Helmert Conformal Transformation (Rigid Rotation + Uniform Scale)",
-      metrics: "Zero Distortion: Preserves document geometry, parallel lines & sharp typography",
-      controlPoints: "5 verified historical anchors: Mansion, Race Track, Slave Houses, Tates Creek, Richmond Rd",
-      confidence: 99.6
+      algorithm: "Rigid Road-Shape Similarity: the sheet's Richmond Rd and Tates Creek Pike ink fitted to the modern centrelines (single rotation + uniform scale, no local warping)",
+      metrics: "Sheet road ink 4 px (Richmond) and 3 px (Tates Creek) off the modern centrelines at 1.256x / +4.1 deg; Ashland house 20 px, Richmond toll house 19 px and Cooper Dr at the Chinoe dot 18 px as free checks",
+      controlPoints: "Richmond Rd corridor and Tates Creek Pike; checks: Ashland house, Richmond toll house, Morton Jr High, Cooper Dr/Chinoe",
+      confidence: 85
     },
     hotspots: [
       {
@@ -164,10 +168,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "Documents the circular 1-mile municipal boundary of Lexington and adjacent antebellum estates of Gen. William Preston, Mentelle, and M. Humston."
     ],
     mlModelDetails: {
-      algorithm: "Helmert Spatial Transformation (LOC Archival Master Scan Plate 30)",
-      metrics: "Zero Shear / Zero Distortion: Preserves authentic 1877 plate typography",
-      controlPoints: "Richmond Pike Turnpike Corridor & Ashland Estate Grounds",
-      confidence: 99.8
+      algorithm: "Road-Shape Similarity: Tates Creek Pike and Richmond Pike ink fitted to the modern Tates Creek Rd / Richmond Rd centrelines (chamfer, multi-start)",
+      metrics: "Plate ink sits 8 px (Tates Creek) and 7 px (Richmond) off the modern pavement centrelines; the Richmond Pike Toll Ho. then lands 23 px from the Chinoe junction - house symbols are checks, not inputs (2.1x upscale of a county atlas)",
+      controlPoints: "Tates Creek Pike bends and Richmond Pike heading; checks: Ashland residence, Toll Ho., T.H. Clay Est.",
+      confidence: 85
     },
     hotspots: [
       {
@@ -245,10 +249,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "Reservoir #1 and #2 (Lexington water supply) are visible at the bottom right."
     ],
     mlModelDetails: {
-      algorithm: "Sub-Pixel Affine Registration with Coordinate Offset Compensation",
-      metrics: "Residual RMSE: 0.00 px (Exact feature coincidence on headstones & /wall)",
-      controlPoints: "3 ground-truth anchors: Headstones oval, /wall boundary, central ground node",
-      confidence: 99.9
+      algorithm: "Least-Squares Similarity on all 5 of Thompson's slide markers (clean raw frame; film border masked)",
+      metrics: "RMSE 6.3 px, max 11.4 px — scale 0.994, rotation −0.14°: Thompson had already registered this frame to the 2024 view",
+      controlPoints: "Headstones oval · '/wall' slash · Chinoe/Cooper dot · Tates Creek/Alumni dot · Lakewood pond dot",
+      confidence: 93.3
     },
     hotspots: [
       {
@@ -268,8 +272,8 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-49-wall",
         title: "Historic Plantation Dry-Stone Wall (/wall)",
         category: "Infrastructure",
-        pixelX: 56.0,
-        pixelY: 65.7,
+        pixelX: 54.6,
+        pixelY: 64.9,
         lat: 38.01420,
         lng: -84.47800,
         summary: "Continuous historic rock wall constructed by enslaved masons marking the boundary of the agricultural curtilage.",
@@ -312,10 +316,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "Subdivision parceling isolated the enslaved cemetery headstones into private backyards, preserving them from commercial demolition."
     ],
     mlModelDetails: {
-      algorithm: "Sub-Pixel Affine Registration with Coordinate Offset Compensation",
-      metrics: "Residual RMSE: 0.00 px (Exact feature coincidence on headstones & /wall)",
-      controlPoints: "3 ground-truth anchors: Headstones oval, /wall boundary, central ground node",
-      confidence: 99.9
+      algorithm: "Least-Squares Similarity on all 5 of Thompson's slide markers (slide render; non-photo area masked)",
+      metrics: "RMSE 18.8 px, max 32.0 px at the '/wall' marker — hand-placed markers; street-level refinement pending",
+      controlPoints: "Headstones oval · '/wall' slash · Chinoe/Cooper dot · Tates Creek/Alumni dot · Lakewood pond dot",
+      confidence: 81.2
     },
     hotspots: [
       {
@@ -367,10 +371,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "Threat & Preservation: Situated in residential backyards, requiring cultural resource stewardship and community partnership."
     ],
     mlModelDetails: {
-      algorithm: "Sub-meter Geolocation & Coordinate Cross-Referencing",
-      metrics: "GPS Precision: ±1.2 meters | Verified against Google Earth Ortho",
+      algorithm: "Field geolocation by B.P. Thompson; pin placed at the centroid of his Slide 7 headstones marker (782.7, 577.5)",
+      metrics: "With the sheet's streets registered, its hand-drawn Slave Cemetery symbol lands roughly 270 px northwest of the headstones (Indian Mound area) - the 1865 sketch, not the street base, carries that offset",
       controlPoints: "1337 Cooper Drive parcel boundary and dry-stone wall alignment",
-      confidence: 99.8
+      confidence: 95
     },
     hotspots: [
       {
@@ -390,8 +394,8 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-stone-wall",
         title: "Historic Plantation Dry-Stone Wall (/wall)",
         category: "Infrastructure",
-        pixelX: 56.0,
-        pixelY: 65.7,
+        pixelX: 54.6,
+        pixelY: 64.9,
         lat: 38.01420,
         lng: -84.47800,
         summary: "Continuous historic rock wall constructed by enslaved masons marking the boundary of the agricultural curtilage.",
@@ -421,10 +425,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "Blue pond polygons reveal forgotten drainage basins that shaped modern Lexington stormwater flow."
     ],
     mlModelDetails: {
-      algorithm: "Affine Orthophoto Georeference (Zero Radial Warping)",
-      metrics: "Zero distortion: Vector lines, ponds, and boundaries retain original planarity",
-      controlPoints: "Perimeter road junctions, Cooper Dr / Wall, and Ashland Mansion",
-      confidence: 99.7
+      algorithm: "Planar Homography — perspective rectification of an oblique (tilted) Google Earth view on 5 site correspondences",
+      metrics: "RMSE 23.2 px, max 34.7 px (Shriners); an affine cannot fit this slide (Idle Hour implies +15° and the reservoir +34° under a similarity)",
+      controlPoints: "Ashland mansion · Shriners building · Henry Clay High · Morton Jr High · 1337 Cooper Dr study box",
+      confidence: 76.8
     },
     hotspots: [
       {
@@ -489,10 +493,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "Parcel 10 (1889 Beal to McDowell, 113 acres): The Gibson tract consolidation."
     ],
     mlModelDetails: {
-      algorithm: "True-North Cartographic Rectification (90° CCW Rotation + Planar Affine)",
-      metrics: "Zero distortion: 100% legible horizontal typography and true geographic north orientation",
-      controlPoints: "Richmond Pike (SE corridor) and Tates Creek Rd (SW corridor)",
-      confidence: 99.5
+      algorithm: "90 deg CCW True-North Rotation + Similarity pinned on the Chinoe and Fontaine junction ticks, with the plat's Richmond Rd line ICP-fitted to the modern centreline",
+      metrics: "Chinoe tick 4 px, Fontaine junction 9 px, Richmond Rd double line 4 px off centreline; Ashland house 14 px and Mansfield 27 px as free checks (RMSE 15.9 px)",
+      controlPoints: "Chinoe junction tick, Fontaine junction, Richmond Rd double line; checks: A Ashland, C Mansfield",
+      confidence: 84
     },
     hotspots: [
       {
