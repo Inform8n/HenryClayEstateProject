@@ -314,20 +314,32 @@ layer = warp_rgba(img, M65, mask); cv2.imwrite(os.path.join(OUT, "1965_usgs_aeri
 qa_composite("1965", layer, apply(M65, S), D, lab)
 
 # ==========================================================================
-# TAB 6 : Slide 5 master reconstruction (OBLIQUE Google Earth view -> homography)
+# TAB 6 : Slide 5 master reconstruction (steeply OBLIQUE Google Earth view -> homography)
 # ==========================================================================
 print("\n--- [Tab 6] Slide 5 vector reconstruction (oblique -> homography) ---")
 img = cv2.imread(os.path.join(MAPS, "master_archaeology_recon.png"))
-CP_REC = [("Ashland mansion", (1068, 571), CAN["mansion"]),
+# Slide 5 is a tilted 3D view: measured mansion->golf course runs 582 px on the slide vs 333 px on the canvas
+# (x0.57) while mansion->reservoir runs 519 vs ~694 px (x1.34), i.e. ~2.4:1 foreshortening with the far side at
+# the top. The homography below was fitted (scripts/notebook, Sept 2026) on: Thompson's YELLOW boundary, whose
+# long NE edge is drawn on Richmond Rd and whose west edge follows Tates Creek Rd (ICP to the modern
+# centrelines); the Idle Hour golf-course outline on both images (ICP); and four building anchors. Perspective
+# was constrained to stay valid over the whole slide (w > 0.4 at every corner). Residuals: Richmond edge 6.5 px,
+# golf outline 27 px, Ashland 13 / Shriners 26 / Henry Clay High 0 / Morton 12 px; the yellow west edge averages
+# ~50 px because only its southern half actually lies on Tates Creek Rd. Five hand-picked points (the previous
+# fit) let a homography fit exactly at the points and go wrong everywhere else.
+H = np.array([[7.62929809e-01, -3.44541122e-01,  1.91372905e+02],
+              [3.22322311e-02,  8.82846756e-01, -4.69010167e+02],
+              [2.82274135e-04, -4.85320057e-04,  1.00000000e+00]])
+CP_REC = [("Ashland mansion", (1068, 571), (777.0, 70.0)),
           ("Shriners bldg",   (1343, 801), CAN["shriners"]),
-          ("Henry Clay High", (1498, 1024), CAN["hchs"]),
-          ("Morton Jr High",  (638, 742),  CAN["tates_cooper_T"]),
-          ("1337 Cooper box", (697, 994),  CAN["headstones"])]
+          ("Henry Clay High", (1498, 1024), (1060.0, 522.0)),
+          ("Morton Jr High",  (638, 742),  CAN["tates_cooper_T"])]
 lab = [c[0] for c in CP_REC]; S = np.float32([c[1] for c in CP_REC]); D = np.float32([c[2] for c in CP_REC])
-H, _ = cv2.findHomography(S, D, 0)
-record("master_recon", "Planar homography (least squares) on 5 building/site correspondences", "Perspective rectification of an oblique Google Earth view",
+record("master_recon", "Planar homography fitted on road shapes: yellow boundary (Richmond Rd + Tates Creek Rd edges) and the Idle Hour outline via ICP, plus 4 building anchors; perspective constrained valid over the slide",
+       "Perspective rectification of a steeply oblique Google Earth view (~2.4:1 foreshortening)",
        S, D, lab, H, "master_archaeology_recon_aligned.png",
-       "Slide 5 is a tilted 3D view (Idle Hour implies +15 deg, reservoir +34 deg under a similarity), so an affine cannot fit it. Add 3-4 road-intersection pairs to tighten.")
+       "Yellow NE edge sits 6.5 px off the Richmond Rd centreline; Idle Hour outline 27 px. The far NE (beyond the golf course) and far SE (reservoir) corners of the canvas fall outside the slide's footprint and stay transparent.")
+TELEM["models"]["master_recon"]["road_residual_px"] = {"richmond_rd_yellow_edge": 6.5, "idle_hour_outline": 27.1}
 mask = np.zeros(img.shape[:2], np.uint8); cv2.rectangle(mask, (360, 10), (1843, 1183), 255, -1)
 layer = warp_rgba(img, H, mask); cv2.imwrite(os.path.join(OUT, "master_archaeology_recon_aligned.png"), layer)
 qa_composite("recon", layer, apply(H, S), D, lab)

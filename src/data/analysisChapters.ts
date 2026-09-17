@@ -425,9 +425,9 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "Blue pond polygons reveal forgotten drainage basins that shaped modern Lexington stormwater flow."
     ],
     mlModelDetails: {
-      algorithm: "Planar Homography — perspective rectification of an oblique (tilted) Google Earth view on 5 site correspondences",
-      metrics: "RMSE 23.2 px, max 34.7 px (Shriners); an affine cannot fit this slide (Idle Hour implies +15° and the reservoir +34° under a similarity)",
-      controlPoints: "Ashland mansion · Shriners building · Henry Clay High · Morton Jr High · 1337 Cooper Dr study box",
+      algorithm: "Planar homography fitted on road shapes - Thompson's yellow boundary (its NE edge is drawn on Richmond Rd, its west edge on Tates Creek Rd) and the Idle Hour golf-course outline via ICP, plus four building anchors; a steeply oblique Google Earth view (~2.4:1 foreshortening)",
+      metrics: "Yellow boundary 6.5 px off the Richmond Rd centreline, Idle Hour outline 27 px; Ashland 13, Shriners 26, Henry Clay High 0, Morton 12 px; perspective constrained valid across the whole slide",
+      controlPoints: "Yellow boundary on Richmond Rd and Tates Creek Rd, Idle Hour outline; anchors: Ashland, Shriners, Henry Clay High, Morton Jr High",
       confidence: 76.8
     },
     hotspots: [
@@ -448,10 +448,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-curtilage-racetrack",
         title: "Reconstructed Race Track Boundary",
         category: "Agricultural",
-        pixelX: 44.0,
-        pixelY: 44.1,
-        lat: 38.0194,
-        lng: -84.48198,
+        pixelX: 36.1,
+        pixelY: 42.1,
+        lat: 38.01988,
+        lng: -84.48633,
         summary: "Red vector trace marking Henry Clay's 1-mile turf training track.",
         evidence: "Slide 5 red vector oval",
         modernLandmark: "Chevy Chase subdivision (Cochran / Fontaine / Hart)",
@@ -461,13 +461,13 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-ponds-drainage",
         title: "Historic Plantation Spring Ponds",
         category: "Agricultural",
-        pixelX: 59.1,
-        pixelY: 60.0,
-        lat: 38.0155,
-        lng: -84.4737,
+        pixelX: 49.2,
+        pixelY: 65.5,
+        lat: 38.01416,
+        lng: -84.47912,
         summary: "Spring-fed ponds providing water for thoroughbred horses, livestock, and domestic operations.",
         evidence: "Slide 5 blue vector polygons",
-        modernLandmark: "Henry Clay High School grounds (Slide 5 blue polygon)",
+        modernLandmark: "Slide 5 blue polygon near Cooper Dr / the 1337 Cooper headstones",
         badgeColor: "#3b82f6"
       }
     ]

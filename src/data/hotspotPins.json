@@ -181,23 +181,23 @@
   },
   "hs-curtilage-racetrack": {
     "canvas": [
-      703.9,
-      396.5
+      577.3,
+      378.5
     ],
-    "pixelX": 44.0,
-    "pixelY": 44.1,
-    "lat": 38.0194,
-    "lng": -84.48198
+    "pixelX": 36.1,
+    "pixelY": 42.1,
+    "lat": 38.01988,
+    "lng": -84.48633
   },
   "hs-ponds-drainage": {
     "canvas": [
-      944.9,
-      540.3
+      787.3,
+      589.7
     ],
-    "pixelX": 59.1,
-    "pixelY": 60.0,
-    "lat": 38.0155,
-    "lng": -84.4737
+    "pixelX": 49.2,
+    "pixelY": 65.5,
+    "lat": 38.01416,
+    "lng": -84.47912
   },
   "hs-parcel-1": {
     "canvas": [
