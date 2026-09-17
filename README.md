@@ -3,7 +3,13 @@
 
 A standalone web-based archaeological GIS analysis platform comparing historical maps and aerial surveys against modern satellite orthophotos for Henry Clay's historic **Ashland Estate** and **Ashland-on-Tates-Creek** in Lexington, Kentucky.
 
-Based on doctoral dissertation field research by **B.P. Thompson** (*Historic Archaeology of Henry Clay's Ashland Estate*, Department of Anthropology, University of Kentucky) and archival cartography from the **Library of Congress Geography & Map Division**.
+## Credits
+
+**Research and field discovery: B.P. Thompson**, PhD student, [University of Kentucky Department of Anthropology](https://anthropology.as.uky.edu/), from her dissertation proposal defense *Historic Anarchaeology of Henry Clay's Ashland Estate* (she describes herself as the Commonwealth's first Black historical archaeologist). The 1865 curtilage map, the Bean 1980 plat, the vector reconstruction, the 1949/1965 aerial registrations, the 2024 baseline and the 1337 Cooper Drive headstone discovery are her work; this site only aligns and presents them. The defense deck itself is **not** included in this repository pending her permission to host it (the `extract_assets.py` step that renders it is therefore not reproducible from the repo).
+
+**Archival cartography:** Library of Congress Geography & Map Division (D.G. Beers & Co. 1877 Fayette County atlas, Plate 30, LCCN 2005627107); U.S. Geological Survey aerial photography (1949 GS-JS 2-10, 1965).
+
+**Alignment pipeline, QA and viewer:** Jack King, King Analytics (Lexington, KY).
 
 ---
 

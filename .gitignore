@@ -30,3 +30,6 @@ __pycache__/
 # Regenerable alignment artefacts (run scripts/ml_align_v2.py)
 public/maps/qa/
 public/maps/aligned_v1_previous/
+
+# Dissertation defense deck: not hosted pending author permission
+Dissertation Proposal Defense.pdf

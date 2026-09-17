@@ -125,6 +125,18 @@ export function App() {
         </div>
       </main>
 
+      {/* CREDITS */}
+      <footer className="shrink-0 px-5 py-1.5 bg-slate-900 border-t border-slate-800 text-[11px] text-slate-400 flex flex-wrap items-center gap-x-4 gap-y-1 z-30">
+        <span>
+          Research &amp; field discovery: <span className="text-slate-200 font-semibold">B.P. Thompson</span>, PhD student,{" "}
+          <a href="https://anthropology.as.uky.edu/" target="_blank" rel="noreferrer" className="text-amber-300 hover:text-amber-200 underline underline-offset-2">
+            University of Kentucky Department of Anthropology
+          </a>
+          {" "}&mdash; <em>Historic Anarchaeology of Henry Clay&rsquo;s Ashland Estate</em> (dissertation proposal defense). The defense deck itself is not hosted here.
+        </span>
+        <span className="hidden lg:inline text-slate-600">|</span>
+        <span>Archival maps: Library of Congress Geography &amp; Map Division, USGS. Alignment pipeline &amp; viewer: Jack King, King Analytics.</span>
+      </footer>
       {/* Modals for Slide View, Field Photos, and Archival Sources Guide */}
       <PresentationModals
         chapter={selectedChapter}
