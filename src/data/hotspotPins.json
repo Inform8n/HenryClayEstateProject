@@ -1,0 +1,222 @@
+{
+  "hs-mansion": {
+    "canvas": [
+      777.5,
+      56.3
+    ],
+    "pixelX": 48.6,
+    "pixelY": 6.3,
+    "lat": 38.02861,
+    "lng": -84.47945
+  },
+  "hs-enslaved-quarters": {
+    "canvas": [
+      752.1,
+      92.8
+    ],
+    "pixelX": 47.0,
+    "pixelY": 10.3,
+    "lat": 38.02762,
+    "lng": -84.48033
+  },
+  "hs-race-track": {
+    "canvas": [
+      591.4,
+      292.4
+    ],
+    "pixelX": 37.0,
+    "pixelY": 32.5,
+    "lat": 38.02222,
+    "lng": -84.48585
+  },
+  "hs-brick-slave-houses": {
+    "canvas": [
+      566.7,
+      416.3
+    ],
+    "pixelX": 35.4,
+    "pixelY": 46.3,
+    "lat": 38.01886,
+    "lng": -84.4867
+  },
+  "hs-tates-creek": {
+    "canvas": [
+      579.4,
+      237.3
+    ],
+    "pixelX": 36.2,
+    "pixelY": 26.4,
+    "lat": 38.02371,
+    "lng": -84.48626
+  },
+  "hs-hemp-barn": {
+    "canvas": [
+      891.4,
+      379.1
+    ],
+    "pixelX": 55.7,
+    "pixelY": 42.1,
+    "lat": 38.01987,
+    "lng": -84.47554
+  },
+  "hs-beers-ashland": {
+    "canvas": [
+      777.5,
+      56.3
+    ],
+    "pixelX": 48.6,
+    "pixelY": 6.3,
+    "lat": 38.02861,
+    "lng": -84.47945
+  },
+  "hs-beers-toll-ho": {
+    "canvas": [
+      988.4,
+      297.0
+    ],
+    "pixelX": 61.8,
+    "pixelY": 33.0,
+    "lat": 38.02209,
+    "lng": -84.4722
+  },
+  "hs-beers-jm-clay": {
+    "canvas": [
+      561.9,
+      290.6
+    ],
+    "pixelX": 35.1,
+    "pixelY": 32.3,
+    "lat": 38.02226,
+    "lng": -84.48686
+  },
+  "hs-beers-mansfield": {
+    "canvas": [
+      1096.7,
+      455.0
+    ],
+    "pixelX": 68.5,
+    "pixelY": 50.6,
+    "lat": 38.01781,
+    "lng": -84.46848
+  },
+  "hs-49-headstones": {
+    "canvas": [
+      782.7,
+      577.5
+    ],
+    "pixelX": 48.9,
+    "pixelY": 64.2,
+    "lat": 38.01449,
+    "lng": -84.47927
+  },
+  "hs-49-wall": {
+    "canvas": [
+      873.1,
+      584.0
+    ],
+    "pixelX": 54.6,
+    "pixelY": 64.9,
+    "lat": 38.01432,
+    "lng": -84.47617
+  },
+  "hs-49-pastures": {
+    "canvas": [
+      591.4,
+      292.4
+    ],
+    "pixelX": 37.0,
+    "pixelY": 32.5,
+    "lat": 38.02222,
+    "lng": -84.48585
+  },
+  "hs-65-headstones": {
+    "canvas": [
+      782.7,
+      577.5
+    ],
+    "pixelX": 48.9,
+    "pixelY": 64.2,
+    "lat": 38.01449,
+    "lng": -84.47927
+  },
+  "hs-65-growth": {
+    "canvas": [
+      591.4,
+      292.4
+    ],
+    "pixelX": 37.0,
+    "pixelY": 32.5,
+    "lat": 38.02222,
+    "lng": -84.48585
+  },
+  "hs-headstones-field": {
+    "canvas": [
+      782.7,
+      577.5
+    ],
+    "pixelX": 48.9,
+    "pixelY": 64.2,
+    "lat": 38.01449,
+    "lng": -84.47927
+  },
+  "hs-stone-wall": {
+    "canvas": [
+      873.1,
+      584.0
+    ],
+    "pixelX": 54.6,
+    "pixelY": 64.9,
+    "lat": 38.01432,
+    "lng": -84.47617
+  },
+  "hs-curtilage-mansion": {
+    "canvas": [
+      777.5,
+      56.3
+    ],
+    "pixelX": 48.6,
+    "pixelY": 6.3,
+    "lat": 38.02861,
+    "lng": -84.47945
+  },
+  "hs-curtilage-racetrack": {
+    "canvas": [
+      703.9,
+      396.5
+    ],
+    "pixelX": 44.0,
+    "pixelY": 44.1,
+    "lat": 38.0194,
+    "lng": -84.48198
+  },
+  "hs-ponds-drainage": {
+    "canvas": [
+      944.9,
+      540.3
+    ],
+    "pixelX": 59.1,
+    "pixelY": 60.0,
+    "lat": 38.0155,
+    "lng": -84.4737
+  },
+  "hs-parcel-1": {
+    "canvas": [
+      804.2,
+      120.3
+    ],
+    "pixelX": 50.3,
+    "pixelY": 13.4,
+    "lat": 38.02688,
+    "lng": -84.47853
+  },
+  "hs-parcel-6": {
+    "canvas": [
+      569.2,
+      310.9
+    ],
+    "pixelX": 35.6,
+    "pixelY": 34.5,
+    "lat": 38.02172,
+    "lng": -84.48661
+  }
+}

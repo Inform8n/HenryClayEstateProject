@@ -367,6 +367,14 @@ qa_composite("plat", layer, apply(Mp, S), D, lab)
 # ==========================================================================
 # telemetry + anchors (pins: pixelX = x/16, pixelY = y/9)
 # ==========================================================================
+TELEM["transforms"] = {   # source-image px -> 1600x900 canvas px; 2x3 = affine, 3x3 = homography
+    "1865_farm":  {"matrix": M1865.tolist(),  "source": "public/maps/1865_ashland_farm_raw.png"},
+    "1877_beers": {"matrix": M_beers.tolist(), "source": "public/maps/1877_beers_fayette_county_plate_30.jpg (2601x3984)"},
+    "1949_aerial":{"matrix": M49.tolist(),    "source": "public/maps/1949_usgs_aerial_raw.png"},
+    "1965_aerial":{"matrix": M65.tolist(),    "source": "public/maps/1965_usgs_aerial.png (slide render)"},
+    "master_recon":{"matrix": H.tolist(),     "source": "public/maps/master_archaeology_recon.png (slide render)"},
+    "1800_1900_purchases": {"matrix": Mp.tolist(), "source": "public/maps/1800_1900_clay_purchases_raw.png rotated 90 deg CCW: (x,y) -> (y, W-1-x), W=692"},
+}
 TELEM["canvas_anchors"] = {k: [round(v[0], 1), round(v[1], 1)] for k, v in CAN.items()}
 TELEM["hotspot_pins_pct"] = {k: {"pixelX": round(v[0] / 16, 1), "pixelY": round(v[1] / 9, 1)} for k, v in CAN.items()}
 jp = os.path.join(ROOT, "src", "data", "mlAlignmentData.json")
