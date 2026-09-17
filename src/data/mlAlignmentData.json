@@ -6,24 +6,25 @@
   },
   "models": {
     "1865_farm": {
-      "method": "Rigid similarity: Richmond Rd + Tates Creek Pike ink line-fitted to modern centrelines, pinned by the Tates Creek bend, Richmond toll house and Ashland house",
+      "method": "Rigid similarity: Richmond Rd, Tates Creek Pike and Cooper Dr ink line-fitted to mask-traced modern centrelines, pinned by the Tates Creek/Cooper corner, Richmond toll house and Ashland house",
       "distortion": "Zero (single rotation + uniform scale; no local warping)",
       "control_nodes": 5,
-      "rmse_px": 45.79,
-      "max_residual_px": 66.93,
+      "rmse_px": 30.37,
+      "max_residual_px": 46.87,
       "residuals_px": {
-        "Tates Creek bend @Morton": 32.95,
-        "Richmond toll house": 26.84,
-        "Ashland house": 44.79,
-        "Morton Jr High (check)": 46.82,
-        "Cooper Dr @Chinoe (check)": 66.93
+        "Tates Creek & Cooper corner": 36.79,
+        "Richmond toll house": 24.24,
+        "Ashland house": 13.06,
+        "Morton Jr High (check)": 46.87,
+        "Cooper Dr @Chinoe (check)": 17.42
       },
-      "confidence": 54.2,
+      "confidence": 69.6,
       "output": "./maps/aligned/1865_ashland_farm_aligned.png",
-      "notes": "Road-shape + junction fit (first three points are inputs, the rest checks). Sheet road ink off modern centreline: Richmond 3.7 px, Tates Creek 3.6 px. The hand-drawn 1865 features (race track, cemetery, ponds, hemp barn) sit where the sheet places them relative to its street base and are not forced onto modern finds.",
+      "notes": "Three-road fit (first three points are inputs, the rest checks). Sheet road ink off modern centreline: Richmond 4.0 px, Tates Creek 8.6 px, Cooper Dr 8.8 px. The hand-drawn 1865 features (race track, cemetery, ponds, hemp barn) sit where the sheet places them relative to its street base and are not forced onto modern finds.",
       "road_residual_px": {
-        "richmond_rd": 3.7,
-        "tates_creek_rd": 3.6
+        "richmond_rd": 4.0,
+        "tates_creek_rd": 8.6,
+        "cooper_dr": 8.8
       }
     },
     "1877_beers": {
@@ -151,8 +152,8 @@
       160.0
     ],
     "tates_cooper_x": [
-      455.0,
-      278.0
+      454.0,
+      322.0
     ],
     "hchs": [
       1055.0,
@@ -210,7 +211,7 @@
     },
     "tates_cooper_x": {
       "pixelX": 28.4,
-      "pixelY": 30.9
+      "pixelY": 35.8
     },
     "hchs": {
       "pixelX": 65.9,

@@ -61,9 +61,9 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "The large industrial 'Hemp Barn' was situated near the eastern boundary along modern Blairmore Drive."
     ],
     mlModelDetails: {
-      algorithm: "Rigid Road-Shape Similarity: the sheet's Richmond Rd and Tates Creek Pike ink line-fitted to the modern centrelines, pinned by the Tates Creek bend at Morton, the Richmond toll house and the Ashland house (single rotation + uniform scale, no local warping)",
-      metrics: "Road ink 5 px (Richmond) and 6 px (Tates Creek) off the modern centrelines at 1.342x / +5.0 deg; Tates Creek bend 33 px, Richmond toll house 27 px, Ashland 45 px; Morton Jr High lands on the school as a free check",
-      controlPoints: "Richmond Rd and Tates Creek Pike ink, Tates Creek bend, Richmond toll house, Ashland house; checks: Morton Jr High, Cooper Dr/Chinoe",
+      algorithm: "Rigid Road-Shape Similarity: the sheet's Richmond Rd, Tates Creek Pike and Cooper Dr ink line-fitted to the modern centrelines (traced through the satellite road mask), pinned by the Tates Creek/Cooper corner, the Richmond toll house and the Ashland house - single rotation + uniform scale, no local warping",
+      metrics: "Road ink 7 px (Richmond), 11 px (Tates Creek) and 15 px (Cooper Dr) off the modern centrelines at 1.263x / +3.3 deg; Tates Creek/Cooper corner 37 px, Richmond toll house 24 px, Ashland 13 px. The sheet draws Cooper Dr a few degrees steeper than the real road",
+      controlPoints: "Richmond Rd, Tates Creek Pike and Cooper Dr ink; Tates Creek/Cooper corner, Richmond toll house, Ashland house; checks: Morton Jr High, Cooper Dr at Chinoe",
       confidence: 85
     },
     hotspots: [
