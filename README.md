@@ -1,102 +1,154 @@
-# Ashland Estate Historical GIS & Archaeological Georeferencer
-### Henry Clay Estate & Ashland-on-Tates-Creek (Lexington, Kentucky)
+# Ashland Estate Historical GIS & Archaeological Analysis Platform
+### Machine Learning Spatial Alignment & Historical Analysis | Henry Clay Estate, Lexington, KY
 
-A browser-based Historical GIS georeferencing and overlay tool dedicated to archaeological research in East Lexington, Kentucky. This platform enables researchers, historians, and the public to interactively register historical survey maps, aerial photography (1949, 1965 USGS), and modern GIS satellite layers, calculate Ground Control Points (GCPs), compute in-browser affine or thin-plate spline (TPS) transformations, and analyze archaeological features directly over modern urban fabric.
+A standalone web-based archaeological GIS analysis platform comparing historical maps and aerial surveys against modern satellite orthophotos for Henry Clay's historic **Ashland Estate** and **Ashland-on-Tates-Creek** in Lexington, Kentucky.
 
-Powered by historical materials, surveys, and field research from **B.P. Thompson**'s dissertation presentation (*Historic Anarchaeology of Henry Clay's Ashland Estate*, Department of Anthropology, University of Kentucky).
-
----
-
-## Key Features
-
-1. **Dual-Pane GCP Georeferencer (Side-by-Side View)**
-   - **Left Canvas**: Smooth pan/zoom viewer for high-resolution historical scans with crosshairs and draggable GCP pins.
-   - **Right Canvas**: Interactive modern Leaflet reference map centered on Lexington, KY (Esri World Imagery + labels).
-   - **Interactive Point Pairing**: Click any historical feature $\rightarrow$ click modern street intersection $\rightarrow$ pairs a Ground Control Point.
-   - **Live GCP Table**: Real-time RMSE residual error calculation and transformation selector (**2D Affine** for linear distortion, **Thin-Plate Spline** for irregular historical sketches).
-
-2. **Automated Lexington Street Intersection Matching**
-   - Built-in offline database of 30+ East Lexington street intersections and landmarks (Richmond Rd, S. Ashland Ave, Fontaine Rd, Cooper Dr, Chinoe Rd, Tates Creek Rd).
-   - Live OpenStreetMap Nominatim geocoder fallback constrained to Lexington / Fayette County coordinates.
-
-3. **Interactive Overlay & Exploration Mode**
-   - **Opacity Slider**: Seamless 0–100% fade between modern satellite imagery and georeferenced historical surveys.
-   - **Split-Screen Curtain Tool**: Draggable vertical swipe divider revealing historical survey on the left and modern aerial on the right.
-   - **Spyglass Tool**: Circular magnifying lens that tracks the cursor to inspect the historic estate directly underneath modern houses.
-   - **Archaeological Vector Layer**: Toggleable vector markers and curtilage boundary:
-     - Ashland Mansion & Latrobe footprint (1811)
-     - Brick Enslaved Quarters site (excavated by UK archaeologists)
-     - Ashland-on-Tates-Creek (John M. Clay thoroughbred stud)
-     - Historic Enslaved Cemetery & Headstones locus (vicinity of `1337 Cooper Dr / Lakewood`, `38.0145, -84.4793`)
-     - Clay's historic 1-mile turf training track
-     - Historic dry-stone perimeter wall (`/wall`)
-     - Richmond Rd & Tates Creek historic turnpike toll houses
-     - Hemp processing barns and curtilage boundary
-
-4. **Multi-Format Spatial Data Export**
-   - **Google Earth KMZ Bundle**: Self-contained `.kmz` ground overlay ready to open in Google Earth Desktop/Web.
-   - **Archaeological GeoJSON**: RFC 7946 feature collection with coordinates, historical periods, and citations.
-   - **Control Points CSV**: GCP table with source pixel coordinates, target WGS84 coordinates, and residuals.
+Based on doctoral dissertation field research by **B.P. Thompson** (*Historic Archaeology of Henry Clay's Ashland Estate*, Department of Anthropology, University of Kentucky) and archival cartography from the **Library of Congress Geography & Map Division**.
 
 ---
 
-## Archival Provenance & Sources
+## 1. Project Overview & Architecture
 
-* **1865 Map of Ashland Farm & Land Purchases (1800–1900)**: Cartography by Lexington historian **Richard M. Bean (1980)**, based on Fayette County deed books, preserved in the **Ashland Memorial Foundation Archives** (120 Sycamore Rd) and **University of Kentucky Special Collections Research Center (SCRC)**.
-* **1949 USGS Aerial Photography**: **USGS Flight Project `GS-JS`**, Roll `2`, Frame `10` (1949), archived at the **USGS EROS Center** and **National Archives (NARA Cartographic Branch, Record Group 57)**.
-* **1965 USGS Aerial Photography**: U.S. Geological Survey / USDA ASCS aerial flight over Fayette County, KY.
-* **Enslaved Cemetery Field Evidence**: Ground reconnaissance and documentation by **B.P. Thompson** at `1337 Cooper Dr, Lexington, KY` (`38.014495, -84.479273`).
+Unlike generic GIS software, this application is a **dedicated standalone analytical comparative viewer** designed to study specific historical maps from B.P. Thompson's research and Library of Congress master scans.
+
+```
+                                  CANONICAL COORDINATE SPACE
+                             (1600 x 900 Standardized Grid, 16:9)
+                                              │
+                    ┌─────────────────────────┴─────────────────────────┐
+                    ▼                                                   ▼
+         Modern Satellite Layer                             Historical Survey Layer
+   (public/maps/2024_orthophoto_raw.png)               (public/maps/aligned/<map>_aligned.png)
+                    │                                                   │
+                    └─────────────────────────┬─────────────────────────┘
+                                              ▼
+                             Interactive Comparison Viewer
+                     ├── Before / After Curtain Split (0–100%)
+                     ├── Cross-Fade Opacity (0–100%)
+                     ├── Spyglass Lens Mode
+                     └── Interactive Hotspot Pins & Archaeological Evidence
+```
+
+### Key Technical Specs
+- **Modern Basemap Coordinate System:** Standardized $1600 \times 900\text{ px}$ canvas ($16:9$ aspect ratio), aligned to B.P. Thompson's dissertation reference slide (Slide 7).
+- **Hotspot Pin System:** Relative percentages `pixelX: [0..100]`, `pixelY: [0..100]` defined in `src/data/analysisChapters.ts`.
+- **Transformation Pipeline:** `scripts/ml_align.py` executes OpenCV spatial transformations and outputs directly to `public/maps/aligned/`.
+- **Frontend Stack:** React 18, TypeScript, Tailwind CSS, Lucide Icons, Vite (100% client-side static build, ready for GitHub Pages).
 
 ---
 
-## Quick Start (Local Development)
+## 2. The 7 Comparative Chapters
+
+| Tab | Chapter Title | Historical Source | Aligned File | Transformation Method |
+| :---: | :--- | :--- | :--- | :--- |
+| **1** | **1865 Ashland Farm** | 1865 Curtilage Survey (Bean / Thompson) | `1865_ashland_farm_aligned.png` | Helmert Conformal Transform (Rigid rotation $-11.05^\circ$, uniform scale $1.411$) |
+| **2** | **1877 Beers Master Map** | LOC Plate 30 Master TIFF (`ca000030`, 31.1 MB) | `1877_beers_ashland_aligned.png` | Helmert Spatial Transformation along Richmond Pike corridor |
+| **3** | **1949 Aerial Survey** | USGS Flight `GS-JS` 2-10 (Pre-subdivision) | `1949_usgs_aerial_aligned.png` | Sub-Pixel Affine Registration ($\Delta x = -33.4\text{ px}, \Delta y = +1.5\text{ px}$) |
+| **4** | **1965 Aerial Survey** | USGS / ASCS Mid-Century Flight | `1965_usgs_aerial_aligned.png` | Sub-Pixel Affine Registration ($\Delta x = -80.4\text{ px}, \Delta y = -58.5\text{ px}$) |
+| **5** | **Cemetery Discovery** | 1865 Survey + 1337 Cooper Dr GPS | `1865_ashland_farm_aligned.png` | Cadastral Overlay ($38.014495^\circ\text{ N}, -84.479273^\circ\text{ W}$) |
+| **6** | **Vector Model** | Slide 5 Master Reconstruction | `master_archaeology_recon_aligned.png` | Planar Affine Georeference (Curtilage, race track, ponds) |
+| **7** | **Land Purchases** | R.M. Bean 1980 10-Deed Plat (Slide 4) | `1800_1900_clay_purchases_aligned.png` | 90° CCW True-North Rotation + Planar Affine Transform |
+
+---
+
+## 3. Mathematical Alignment Pipeline (`scripts/ml_align.py`)
+
+### Ground Truth Anchor Coordinates ($1600 \times 900$)
+All maps are aligned against these verified anchor points on the modern 2024 orthophoto:
+```python
+DST_ASHLAND_MANSION     = np.array([770.0, 50.0])       # Ashland Mansion (120 Sycamore Rd)
+DST_CHINOE_RICHMOND     = np.array([1040.0, 310.0])     # Richmond Rd & Chinoe Rd (Toll House)
+DST_HEADSTONES_LOCUS    = np.array([782.9, 577.2])      # 1337 Cooper Dr Enslaved Cemetery
+DST_WALL_SLASH          = np.array([895.9, 591.2])      # Historic Dry-Stone Wall (/wall)
+DST_RACE_TRACK          = np.array([650.0, 320.0])      # 1-Mile Turf Race Track Center
+DST_TATES_CREEK_COOPER  = np.array([512.0, 241.0])      # Tates Creek Rd & Cooper Dr (Teal 'T')
+DST_ASHLAND_TATES_CREEK = np.array([388.8, 613.0])      # Ashland-on-Tates-Creek (John M. Clay)
+DST_HENRY_CLAY_HIGH     = np.array([1050.0, 430.0])     # Henry Clay High / Hemp Barn
+DST_MANSFIELD           = np.array([1120.0, 420.0])     # Mansfield (Thomas Hart Clay Estate)
+```
+
+### Why Thin-Plate Spline (TPS) Was Replaced
+- **Radial Divergence:** Previous iterations used `scipy.interpolate.Rbf` with radial basis kernel $U(r) = r^2 \ln(r)$. Because historical control points were clustered in the interior, unconstrained outer boundaries diverged to infinity, creating severe "bubble" / spherical funhouse distortion on Tabs 1, 2, 5, 6, and 7.
+- **Rigid Helmert & Affine Solution:** Replaced with `cv2.estimateAffinePartial2D` (Helmert conformal) and `cv2.getAffineTransform`. This mathematically guarantees **zero bubble warping**, preserving straight road trajectories, parallel fence lines, and authentic 19th-century typography.
+
+---
+
+## 4. Directory Structure
+
+```
+HenryClayEstateProject/
+├── public/
+│   └── maps/
+│       ├── 2024_orthophoto_raw.png            # 1600x900 Modern basemap (Slide 7)
+│       ├── 2024_orthophoto_annotated.png      # 1600x900 Modern basemap annotated
+│       ├── 1865_ashland_farm_raw.png          # Raw scan of 1865 farm survey
+│       ├── 1877_beers_fayette_county_plate_30.jpg # LOC Plate 30 scan
+│       ├── archival_masters/                  # Full-resolution uncompressed master TIFFs
+│       │   ├── 1877_beers_fayette_county_plate_30_ashland.tif (31.1 MB)
+│       │   ├── 1877_beers_lexington_plate_26_wards_1_4.tif    (31.8 MB)
+│       │   ├── 1877_beers_lexington_plate_24_wards_2_3.tif    (31.6 MB)
+│       │   ├── 1949_usgs_aerial_GS_JS_2_10_master.tif         (8.2 MB)
+│       │   ├── 1965_usgs_aerial_lexington_master.tif          (4.3 MB)
+│       │   └── 1865_ashland_farm_survey_master.tif            (1.2 MB)
+│       └── aligned/                           # Output of scripts/ml_align.py
+│           ├── 1865_ashland_farm_aligned.png
+│           ├── 1877_beers_ashland_aligned.png
+│           ├── 1949_usgs_aerial_aligned.png
+│           ├── 1965_usgs_aerial_aligned.png
+│           ├── master_archaeology_recon_aligned.png
+│           └── 1800_1900_clay_purchases_aligned.png
+├── scripts/
+│   └── ml_align.py                            # Python OpenCV spatial alignment pipeline
+├── src/
+│   ├── App.tsx                                # Main application entry point & layout
+│   ├── components/
+│   │   ├── InteractiveComparisonViewer.tsx    # Split slider, opacity, spyglass viewer
+│   │   ├── AnalysisPanel.tsx                  # Historical narrative & ML telemetry
+│   │   └── PresentationModals.tsx             # Archival downloads & field photos
+│   └── data/
+│       ├── analysisChapters.ts                # Chapter metadata & hotspot percentages
+│       └── mlAlignmentData.json               # Exported algorithm telemetry & RMSE
+└── package.json
+```
+
+---
+
+## 5. Development & Build Instructions
 
 ### Prerequisites
-* [Node.js](https://nodejs.org/) (v18 or higher)
-* `npm` (v9 or higher)
+- Node.js (v18+)
+- Python 3.10+ with `opencv-python`, `numpy`, `playwright`
 
-### Installation & Launch
+### Commands
 ```bash
-# 1. Clone the repository
-git clone https://github.com/<your-username>/ashland-historical-gis.git
-cd ashland-historical-gis
-
-# 2. Install dependencies
+# Install frontend dependencies
 npm install
 
-# 3. Start development server
+# Run Vite dev server (port 3000)
 npm run dev
+
+# Regenerate all aligned maps and telemetry
+python scripts/ml_align.py
+
+# Production TypeScript check & bundle build
+npm run build
 ```
-Open your browser at `http://localhost:3000`.
 
 ---
 
-## Deploying to GitHub Pages (1-Click)
+## 6. Guidance for Advanced Fine-Tuning (Model Hand-off)
 
-This project is configured as a **Static-First Client Application** that runs 100% in the browser with zero server dependencies.
+If you are a downstream model tasked with perfecting the alignment and scale of these historical maps, here are the key areas of focus:
 
-1. Create a repository on GitHub (e.g., `ashland-historical-gis`).
-2. Push this codebase to your `main` branch:
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial release of Ashland Historical GIS"
-   git branch -M main
-   git remote add origin https://github.com/<your-username>/ashland-historical-gis.git
-   git push -u origin main
-   ```
-3. In your GitHub repository:
-   - Go to **Settings** $\rightarrow$ **Pages**.
-   - Under **Build and deployment**, set **Source** to **GitHub Actions**.
-4. The included `.github/workflows/deploy.yml` will automatically build the application and publish it to:
-   `https://<your-username>.github.io/ashland-historical-gis/`
+1. **Tab 1 (1865 Ashland Farm Map):**
+   - The 1865 map is a 19th-century hand-drawn cartographic sketch. Because it was not drawn to an exact modern planar projection, a single global rigid Helmert transform leaves minor residual offset between the race track oval and modern Cochran Rd.
+   - *Refinement approach:* Consider experimenting with a **piece-wise affine mesh (Delaunay triangulation)** or a **regularized thin-plate spline with high regularization parameter ($\lambda \ge 1.0$)** anchored by boundary bounding pins to prevent edge blowout while allowing mild local flexibility.
+2. **Tab 2 (1877 Beers Plate 30):**
+   - Sourced from the uncompressed $31.1\text{ MB}$ LOC master TIFF.
+   - Currently registered on Ashland Mansion and Richmond Pike Toll House. Adding a third control anchor (such as the Chinoe Rd junction or municipal circular boundary) using an Affine transform can fine-tune the exact angle of Richmond Pike.
+3. **Tab 7 (1800–1900 Land Purchases):**
+   - The 1980 Bean plat was drafted with True North pointing to the right. The pipeline rotates it 90° CCW first. Fine-tuning the 3 control points `src_purchases` $\leftrightarrow$ `dst_purchases` in `scripts/ml_align.py` will lock the parcel lines even closer to modern Lexington property lines.
+4. **Hotspot Synchronization:**
+   - Always verify that hotspot coordinates in `src/data/analysisChapters.ts` match pixel percentages:
+     $$\text{pixelX} = \frac{X_{\text{px}}}{1600} \times 100, \quad \text{pixelY} = \frac{Y_{\text{px}}}{900} \times 100$$
 
----
-
-## Technology Stack
-
-* **Frontend**: React 18, TypeScript, Tailwind CSS, Lucide Icons
-* **Mapping Engine**: Leaflet.js
-* **Image Warping & Math**: In-browser HTML5 Canvas 2D, 2D Affine Least-Squares Solver, Thin-Plate Spline (TPS) RBF Kernel
-* **Export Utilities**: JSZip, FileSaver.js
-* **Build System**: Vite
