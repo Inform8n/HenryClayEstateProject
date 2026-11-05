@@ -57,25 +57,11 @@ Unlike generic GIS software, this application is a **dedicated standalone analyt
 
 ---
 
-## 3. Mathematical Alignment Pipeline (`scripts/ml_align.py`)
+## 3. Mathematical Alignment Pipeline (`scripts/ml_align_v2.py` & `scripts/update_pins.py`)
 
-### Ground Truth Anchor Coordinates ($1600 \times 900$)
-All maps are aligned against these verified anchor points on the modern 2024 orthophoto:
-```python
-DST_ASHLAND_MANSION     = np.array([770.0, 50.0])       # Ashland Mansion (120 Sycamore Rd)
-DST_CHINOE_RICHMOND     = np.array([1040.0, 310.0])     # Richmond Rd & Chinoe Rd (Toll House)
-DST_HEADSTONES_LOCUS    = np.array([782.9, 577.2])      # 1337 Cooper Dr Enslaved Cemetery
-DST_WALL_SLASH          = np.array([895.9, 591.2])      # Historic Dry-Stone Wall (/wall)
-DST_RACE_TRACK          = np.array([650.0, 320.0])      # 1-Mile Turf Race Track Center
-DST_TATES_CREEK_COOPER  = np.array([512.0, 241.0])      # Tates Creek Rd & Cooper Dr (Teal 'T')
-DST_ASHLAND_TATES_CREEK = np.array([388.8, 613.0])      # Ashland-on-Tates-Creek (John M. Clay)
-DST_HENRY_CLAY_HIGH     = np.array([1050.0, 430.0])     # Henry Clay High / Hemp Barn
-DST_MANSFIELD           = np.array([1120.0, 420.0])     # Mansfield (Thomas Hart Clay Estate)
-```
-
-### Why Thin-Plate Spline (TPS) Was Replaced
-- **Radial Divergence:** Previous iterations used `scipy.interpolate.Rbf` with radial basis kernel $U(r) = r^2 \ln(r)$. Because historical control points were clustered in the interior, unconstrained outer boundaries diverged to infinity, creating severe "bubble" / spherical funhouse distortion on Tabs 1, 2, 5, 6, and 7.
-- **Rigid Helmert & Affine Solution:** Replaced with `cv2.estimateAffinePartial2D` (Helmert conformal) and `cv2.getAffineTransform`. This mathematically guarantees **zero bubble warping**, preserving straight road trajectories, parallel fence lines, and authentic 19th-century typography.
+### Why Planar Similarity & Affine Transforms Replaced Thin-Plate Spline (TPS)
+- **Radial Divergence in TPS:** Earlier iterations used `scipy.interpolate.Rbf` with radial basis kernel $U(r) = r^2 \ln(r)$. Because historical control points were clustered in the interior, unconstrained outer boundaries diverged, creating spherical "bubble" distortion on historical plats and engravings.
+- **Strictly Planar 4-DOF Similarity & 6-DOF Affine Solution:** Every historical layer is solved via least-squares planar similarity (`ls_similarity`) or planar affine (`ls_affine`) transforms across multi-road control networks, SIFT + RANSAC feature matches, and multi-scale Sobel street-grid correlation. This guarantees **zero non-linear warping**, preserving straight road trajectories, parallel fence lines, and authentic 19th-century typography.
 
 ---
 
@@ -96,7 +82,7 @@ HenryClayEstateProject/
 │       │   ├── 1949_usgs_aerial_GS_JS_2_10_master.tif         (8.2 MB)
 │       │   ├── 1965_usgs_aerial_lexington_master.tif          (4.3 MB)
 │       │   └── 1865_ashland_farm_survey_master.tif            (1.2 MB)
-│       └── aligned/                           # Output of scripts/ml_align.py
+│       └── aligned/                           # Output of scripts/ml_align_v2.py
 │           ├── 1865_ashland_farm_aligned.png
 │           ├── 1877_beers_ashland_aligned.png
 │           ├── 1949_usgs_aerial_aligned.png
@@ -104,7 +90,8 @@ HenryClayEstateProject/
 │           ├── master_archaeology_recon_aligned.png
 │           └── 1800_1900_clay_purchases_aligned.png
 ├── scripts/
-│   └── ml_align.py                            # Python OpenCV spatial alignment pipeline
+│   ├── ml_align_v2.py                         # SIFT + Sobel + Multi-Road alignment pipeline
+│   └── update_pins.py                         # Re-derives hotspot pins & WGS84 coordinates
 ├── src/
 │   ├── App.tsx                                # Main application entry point & layout
 │   ├── components/
@@ -113,6 +100,7 @@ HenryClayEstateProject/
 │   │   └── PresentationModals.tsx             # Archival downloads & field photos
 │   └── data/
 │       ├── analysisChapters.ts                # Chapter metadata & hotspot percentages
+│       ├── hotspotPins.json                   # Derived hotspot coordinates
 │       └── mlAlignmentData.json               # Exported algorithm telemetry & RMSE
 └── package.json
 ```
@@ -123,7 +111,7 @@ HenryClayEstateProject/
 
 ### Prerequisites
 - Node.js (v18+)
-- Python 3.10+ with `opencv-python`, `numpy`, `playwright`
+- Python 3.10+ with `opencv-python` and `numpy`
 
 ### Commands
 ```bash
@@ -140,22 +128,4 @@ python scripts/update_pins.py
 # Production TypeScript check & bundle build
 npm run build
 ```
-
----
-
-## 6. Guidance for Advanced Fine-Tuning (Model Hand-off)
-
-If you are a downstream model tasked with perfecting the alignment and scale of these historical maps, here are the key areas of focus:
-
-1. **Tab 1 (1865 Ashland Farm Map):**
-   - The 1865 map is a 19th-century hand-drawn cartographic sketch. Because it was not drawn to an exact modern planar projection, a single global rigid Helmert transform leaves minor residual offset between the race track oval and modern Cochran Rd.
-   - *Refinement approach:* Consider experimenting with a **piece-wise affine mesh (Delaunay triangulation)** or a **regularized thin-plate spline with high regularization parameter ($\lambda \ge 1.0$)** anchored by boundary bounding pins to prevent edge blowout while allowing mild local flexibility.
-2. **Tab 2 (1877 Beers Plate 30):**
-   - Sourced from the uncompressed $31.1\text{ MB}$ LOC master TIFF.
-   - Currently registered on Ashland Mansion and Richmond Pike Toll House. Adding a third control anchor (such as the Chinoe Rd junction or municipal circular boundary) using an Affine transform can fine-tune the exact angle of Richmond Pike.
-3. **Tab 7 (1800–1900 Land Purchases):**
-   - The 1980 Bean plat was drafted with True North pointing to the right. The pipeline rotates it 90° CCW first. Fine-tuning the 3 control points `src_purchases` $\leftrightarrow$ `dst_purchases` in `scripts/ml_align.py` will lock the parcel lines even closer to modern Lexington property lines.
-4. **Hotspot Synchronization:**
-   - Always verify that hotspot coordinates in `src/data/analysisChapters.ts` match pixel percentages:
-     $$\text{pixelX} = \frac{X_{\text{px}}}{1600} \times 100, \quad \text{pixelY} = \frac{Y_{\text{px}}}{900} \times 100$$
 
