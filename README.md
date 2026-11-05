@@ -45,15 +45,15 @@ Unlike generic GIS software, this application is a **dedicated standalone analyt
 
 ## 2. The 7 Comparative Chapters
 
-| Tab | Chapter Title | Historical Source | Aligned File | Transformation Method |
+| Tab | Chapter Title | Historical Source | Aligned File | Transformation Method & Accuracy |
 | :---: | :--- | :--- | :--- | :--- |
-| **1** | **1865 Ashland Farm** | 1865 Curtilage Survey (Bean / Thompson) | `1865_ashland_farm_aligned.png` | Helmert Conformal Transform (Rigid rotation $-11.05^\circ$, uniform scale $1.411$) |
-| **2** | **1877 Beers Master Map** | LOC Plate 30 Master TIFF (`ca000030`, 31.1 MB) | `1877_beers_ashland_aligned.png` | Helmert Spatial Transformation along Richmond Pike corridor |
-| **3** | **1949 Aerial Survey** | USGS Flight `GS-JS` 2-10 (Pre-subdivision) | `1949_usgs_aerial_aligned.png` | Sub-Pixel Affine Registration ($\Delta x = -33.4\text{ px}, \Delta y = +1.5\text{ px}$) |
-| **4** | **1965 Aerial Survey** | USGS / ASCS Mid-Century Flight | `1965_usgs_aerial_aligned.png` | Sub-Pixel Affine Registration ($\Delta x = -80.4\text{ px}, \Delta y = -58.5\text{ px}$) |
-| **5** | **Cemetery Discovery** | 1865 Survey + 1337 Cooper Dr GPS | `1865_ashland_farm_aligned.png` | Cadastral Overlay ($38.014495^\circ\text{ N}, -84.479273^\circ\text{ W}$) |
-| **6** | **Vector Model** | Slide 5 Master Reconstruction | `master_archaeology_recon_aligned.png` | Planar Affine Georeference (Curtilage, race track, ponds) |
-| **7** | **Land Purchases** | R.M. Bean 1980 10-Deed Plat (Slide 4) | `1800_1900_clay_purchases_aligned.png` | 90° CCW True-North Rotation + Planar Affine Transform |
+| **1** | **1865 Ashland Farm** | 1865 Curtilage Survey (Bean / Thompson) | `1865_ashland_farm_aligned.png` | 6-DOF Planar Affine via Slide 5 vector composition + 3-road fit (`8.28 px` RMSE) |
+| **2** | **1877 Beers Master Map** | LOC Plate 30 Master TIFF (`ca000030`, 31.1 MB) | `1877_beers_ashland_aligned.png` | 13-Point Dual-Turnpike 6-DOF Planar Affine on Richmond & Tates Creek Pikes (`11.04 px` RMSE) |
+| **3** | **1949 Aerial Survey** | USGS Flight `GS-JS` 2-10 (Pre-subdivision) | `1949_usgs_aerial_aligned.png` | Sobel Street-Grid Correlation + 14-Landmark NCC-Verified Planar Affine (`2.76 px` RMSE) |
+| **4** | **1965 Aerial Survey** | USGS / ASCS Mid-Century Flight | `1965_usgs_aerial_aligned.png` | Sobel Street-Grid Correlation + 14-Landmark NCC-Verified Planar Affine (`3.50 px` RMSE) |
+| **5** | **Cemetery Discovery** | 1865 Survey + 1337 Cooper Dr GPS | `1865_ashland_farm_aligned.png` | Cadastral & Perimeter Wall Overlay ($38.014495^\circ\text{ N}, -84.479273^\circ\text{ W}$) |
+| **6** | **Vector Model** | Slide 5 Master Reconstruction (`754x844` raw) | `master_archaeology_recon_aligned.png` | SIFT + RANSAC 4-DOF Similarity on 22 Inliers (`1.03 px` SIFT RMSE / `0.42 px` landmark RMSE) |
+| **7** | **Land Purchases** | R.M. Bean 1980 10-Deed Plat (Slide 4) | `1800_1900_clay_purchases_aligned.png` | 90° CCW True-North Rotation + 15-Point Multi-Road 6-DOF Planar Affine (`9.83 px` RMSE) |
 
 ---
 
@@ -133,8 +133,9 @@ npm install
 # Run Vite dev server (port 3000)
 npm run dev
 
-# Regenerate all aligned maps and telemetry
-python scripts/ml_align.py
+# Regenerate all aligned maps, QA overlays, telemetry, and hotspot pins
+python scripts/ml_align_v2.py
+python scripts/update_pins.py
 
 # Production TypeScript check & bundle build
 npm run build

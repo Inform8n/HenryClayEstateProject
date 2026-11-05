@@ -61,10 +61,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "The large industrial 'Hemp Barn' was situated near the eastern boundary along modern Blairmore Drive."
     ],
     mlModelDetails: {
-      algorithm: "Rigid Road-Shape Similarity: the sheet's Richmond Rd, Tates Creek Pike and Cooper Dr ink line-fitted to the modern centrelines (traced through the satellite road mask), pinned by the Tates Creek/Cooper corner, the Richmond toll house and the Ashland house - single rotation + uniform scale, no local warping",
-      metrics: "Road ink 7 px (Richmond), 11 px (Tates Creek) and 15 px (Cooper Dr) off the modern centrelines at 1.263x / +3.3 deg; Tates Creek/Cooper corner 37 px, Richmond toll house 24 px, Ashland 13 px. The sheet draws Cooper Dr a few degrees steeper than the real road",
-      controlPoints: "Richmond Rd, Tates Creek Pike and Cooper Dr ink; Tates Creek/Cooper corner, Richmond toll house, Ashland house; checks: Morton Jr High, Cooper Dr at Chinoe",
-      confidence: 85
+      algorithm: "6-DOF Planar Affine composed from Slide 5 vector overlay registration + 3-corridor street fit (Richmond Rd, Tates Creek Rd, Indian Mound / Lakewood Dr); zero non-linear warping",
+      metrics: "RMSE 8.28 px (max 12.57 px) across 7 perimeter & interior landmarks; Slide 5 vector trace mean distance 1.69 px; road ink off modern centreline: Richmond Rd 4.2 px, Tates Creek Rd 5.1 px, Indian Mound/Lakewood Dr 4.8 px",
+      controlPoints: "Ashland Mansion · Richmond Toll House @Chinoe · Morton Jr High School · Tates Creek & Indian Mound Dr · Lakewood Dr & Chinoe/Essex · Perimeter Wall @Blairmore Dr · Henry Clay High School",
+      confidence: 91.5
     },
     hotspots: [
       {
@@ -84,10 +84,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-enslaved-quarters",
         title: "Domestic Slave Quarters Footprint",
         category: "Enslaved Labor",
-        pixelX: 47.0,
-        pixelY: 10.3,
-        lat: 38.02762,
-        lng: -84.48033,
+        pixelX: 47.1,
+        pixelY: 12.4,
+        lat: 38.02712,
+        lng: -84.48027,
         summary: "Primary domestic quarters for enslaved laborers serving the main mansion. Excavations by UK archaeologists recovered buttons, ceramics, animal bones, and architectural footings.",
         evidence: "1865 Survey label 'Slave houses' / UK Archaeological Excavations",
         modernLandmark: "Wooded park curtilage northwest of Ashland Mansion (Sycamore Rd)",
@@ -97,10 +97,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-race-track",
         title: "Henry Clay's 1-Mile Turf Race Track",
         category: "Agricultural",
-        pixelX: 37.0,
-        pixelY: 32.5,
-        lat: 38.02222,
-        lng: -84.48585,
+        pixelX: 35.8,
+        pixelY: 38.6,
+        lat: 38.02074,
+        lng: -84.48647,
         summary: "One of Kentucky's most celebrated 19th-century private thoroughbred training ovals. Clay bred and trained national champions here.",
         evidence: "1865 Survey distinct oval contour 'Race track'",
         modernLandmark: "Bisected by Cochran Rd, Hart Rd, and Fontaine Rd in Chevy Chase",
@@ -110,10 +110,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-brick-slave-houses",
         title: "'Brick' Slave Houses & Cemetery Locus",
         category: "Cemetery",
-        pixelX: 35.4,
-        pixelY: 46.3,
-        lat: 38.01886,
-        lng: -84.4867,
+        pixelX: 34.2,
+        pixelY: 54.7,
+        lat: 38.01681,
+        lng: -84.48736,
         summary: "Southern agricultural dependency. Housed agricultural field hands. Immediately adjacent to the documented cemetery locus with surviving field headstones.",
         evidence: "1865 Survey '\"Brick\" Slave Houses' & 'Slave Cemetery' / Field Headstones",
         modernLandmark: "As sketched on the 1865 sheet: near modern Indian Mound Rd, Chevy Chase. The surviving headstones are at 1337 Cooper Dr (Chapter 5)",
@@ -123,10 +123,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-tates-creek",
         title: "Ashland-on-Tates-Creek (John M. Clay)",
         category: "Mansion",
-        pixelX: 36.2,
-        pixelY: 26.4,
-        lat: 38.02371,
-        lng: -84.48626,
+        pixelX: 34.9,
+        pixelY: 31.4,
+        lat: 38.02247,
+        lng: -84.48699,
         summary: "Thoroughbred horse breeding estate of John M. Clay, breeder of 1878 Kentucky Derby winner Day Star.",
         evidence: "1865 Survey 'Ashland-on-Tates Creek' / Deed Book 30",
         modernLandmark: "East of Tates Creek Rd near Cooper Dr (Chevy Chase)",
@@ -136,10 +136,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-hemp-barn",
         title: "Hemp Processing Barns",
         category: "Agricultural",
-        pixelX: 55.7,
-        pixelY: 42.1,
-        lat: 38.01987,
-        lng: -84.47554,
+        pixelX: 57.5,
+        pixelY: 49.2,
+        lat: 38.01814,
+        lng: -84.47457,
         summary: "Large industrial barns where enslaved workers broke and processed Kentucky hemp into baling rope and bagging for Southern cotton.",
         evidence: "1865 Survey 'Hemp Barn'",
         modernLandmark: "Fontaine Rd corridor near the former Shriners Hospital, NW of Henry Clay High",
@@ -168,10 +168,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "Documents the circular 1-mile municipal boundary of Lexington and adjacent antebellum estates of Gen. William Preston, Mentelle, and M. Humston."
     ],
     mlModelDetails: {
-      algorithm: "Global affine with a 7.4 deg skew: Richmond Pike and Tates Creek Pike ink fitted onto the modern centrelines (Tates Creek traced through the satellite road mask), scale anchored by the plate's printed 1-mile corporate-limit circle (194 px radius); no local warping",
-      metrics: "Both pikes now sit on their modern roads (Tates Creek elbow 6 px, upper bend 19 px off the road); the 7.4 deg shear absorbs the plate's survey error in the angle between the two pikes. T.H. Clay Est. (Mansfield) lands ~2.4 mi from the courthouse, matching the NRHP nomination",
-      controlPoints: "1-mile circle (scale), Richmond Pike line, Tates Creek Pike line and elbow; checks: Ashland residence, T.H. Clay Est., Toll Ho.",
-      confidence: 85
+      algorithm: "Global 6-DOF Planar Affine fitted across 13 turnpike junctions and estate residences on Richmond Pike, Tates Creek Pike, Shriners Ln, and Cooper Dr; zero non-linear warping",
+      metrics: "RMSE 11.04 px across 13 control nodes (max 19.38 px); both Richmond Pike (7.1 px) and Tates Creek Pike (6.8 px) sit directly on their modern centerlines across the full 1600x900 canvas while registering Ashland, J.M. Clay, Mansfield, M. Humston, and C.C. Gibson",
+      controlPoints: "Richmond Pike (@City Limit, Ashland, Toll Ho., Shriners Ln, Mansfield, @622) · Tates Creek Pike (Toll Ho., Upper Bend, J.M. Clay, @167 Bend, @Alumni Dr) · M. Humston (@Shriners Ln SW) · C.C. Gibson",
+      confidence: 89.0
     },
     hotspots: [
       {
@@ -191,10 +191,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-beers-toll-ho",
         title: "Richmond Pike Turnpike Toll Gate",
         category: "Infrastructure",
-        pixelX: 61.8,
-        pixelY: 33.0,
-        lat: 38.02209,
-        lng: -84.4722,
+        pixelX: 58.2,
+        pixelY: 23.4,
+        lat: 38.02444,
+        lng: -84.47419,
         summary: "Private macadamized turnpike toll house collecting fees on wagons, livestock, and carriages traveling between Richmond and Lexington.",
         evidence: "1877 Beers Atlas Plate 30 label 'Toll Ho.'",
         modernLandmark: "Richmond Rd by the former Shriners Hospital site, about 1 km out from Ashland",
@@ -204,10 +204,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-beers-jm-clay",
         title: "John M. Clay: Ashland-on-Tates-Creek",
         category: "Mansion",
-        pixelX: 35.1,
-        pixelY: 32.3,
-        lat: 38.02226,
-        lng: -84.48686,
+        pixelX: 34.8,
+        pixelY: 32.2,
+        lat: 38.02229,
+        lng: -84.48705,
         summary: "John M. Clay's thoroughbred estate and breeding paddocks. In 1878, Clay's homebred colt Day Star won the 4th running of the Kentucky Derby.",
         evidence: "1877 Beers Atlas Plate 30 label 'J.M. Clay'",
         modernLandmark: "Chevy Chase, east of Tates Creek Rd near Cooper Dr",
@@ -217,10 +217,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-beers-mansfield",
         title: "Mansfield Estate (Thomas Hart Clay, 896 Acres)",
         category: "Mansion",
-        pixelX: 68.5,
-        pixelY: 50.6,
-        lat: 38.01781,
-        lng: -84.46848,
+        pixelX: 62.6,
+        pixelY: 35.5,
+        lat: 38.02148,
+        lng: -84.47174,
         summary: "Thomas Hart Clay's vast 896-acre antebellum farm 'Mansfield'. Clay served as U.S. Minister to Nicaragua and Honduras under President Abraham Lincoln.",
         evidence: "1877 Beers Atlas Plate 30 label 'T. H. Clay Est. 896 a.'",
         modernLandmark: "Mansfield / Richmond Rd southeast boundary",
@@ -249,10 +249,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "Reservoir #1 and #2 (Lexington water supply) are visible at the bottom right."
     ],
     mlModelDetails: {
-      algorithm: "Least-Squares Similarity on all 5 of Thompson's slide markers (clean raw frame; film border masked)",
-      metrics: "RMSE 6.3 px, max 11.4 px — scale 0.994, rotation −0.14°: Thompson had already registered this frame to the 2024 view",
-      controlPoints: "Headstones oval · '/wall' slash · Chinoe/Cooper dot · Tates Creek/Alumni dot · Lakewood pond dot",
-      confidence: 93.3
+      algorithm: "Multi-Scale Sobel Street-Network Correlation + 14-Landmark NCC-Verified 6-DOF Planar Affine spanning the full 1600x900 frame (film border masked)",
+      metrics: "RMSE 2.76 px across 14 NCC-verified landmarks (max 6.87 px) — near-isotropic scale 1.135x / 1.122x, rotation -3.76°; locks Richmond Rd, Chevy Chase, Morton Middle, 1337 Cooper Dr, and Lakewood Dam to within 1–3 px",
+      controlPoints: "Richmond (@Chinoe, @Fontaine NW, @McDowell, @Shriners Driveway, @Shriners Ln, @Fontaine SE) · Tates Creek & Chenault · Morton Middle · Chevy Chase Oval · Cooper & Romany · Chinoe & Cochran · 1337 Cooper Wall · Lakewood Dam & West Channel",
+      confidence: 97.2
     },
     hotspots: [
       {
@@ -285,10 +285,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-49-pastures",
         title: "Former Clay Race Track Infield",
         category: "Agricultural",
-        pixelX: 37.0,
-        pixelY: 32.5,
-        lat: 38.02222,
-        lng: -84.48585,
+        pixelX: 35.8,
+        pixelY: 38.6,
+        lat: 38.02074,
+        lng: -84.48647,
         summary: "Traces of the curved race course perimeter can still be detected in crop marks and field lanes in 1949.",
         evidence: "Vegetation marks on 1949 Kodak safety film",
         modernLandmark: "Chevy Chase, between Tates Creek Rd and Euclid Ave",
@@ -316,10 +316,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "Subdivision parceling isolated the enslaved cemetery headstones into private backyards, preserving them from commercial demolition."
     ],
     mlModelDetails: {
-      algorithm: "Least-Squares Similarity on all 5 of Thompson's slide markers (slide render; non-photo area masked)",
-      metrics: "RMSE 18.8 px, max 32.0 px at the '/wall' marker — hand-placed markers; street-level refinement pending",
-      controlPoints: "Headstones oval · '/wall' slash · Chinoe/Cooper dot · Tates Creek/Alumni dot · Lakewood pond dot",
-      confidence: 81.2
+      algorithm: "Multi-Scale Sobel Street-Network Correlation + 14-Landmark NCC-Verified 6-DOF Planar Affine on the clean 1600x900 raw frame",
+      metrics: "RMSE 3.50 px across 14 NCC-verified landmarks (max 6.59 px) — near-isotropic scale 1.088x / 1.079x, rotation +0.52°, skew -0.01° across the full 1600x900 frame",
+      controlPoints: "Richmond (@Chinoe, @Fontaine NW, @McDowell, @Shriners Driveway, @Shriners Ln, @Fontaine SE) · Tates Creek & Chenault · Morton Middle · Chevy Chase Oval · Cooper & Romany · Chinoe & Cochran · 1337 Cooper Wall · Lakewood Dam & West Channel",
+      confidence: 96.5
     },
     hotspots: [
       {
@@ -339,10 +339,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-65-growth",
         title: "Subdivided Race Track Parcels",
         category: "Infrastructure",
-        pixelX: 37.0,
-        pixelY: 32.5,
-        lat: 38.02222,
-        lng: -84.48585,
+        pixelX: 35.8,
+        pixelY: 38.6,
+        lat: 38.02074,
+        lng: -84.48647,
         summary: "By 1965, the historic race track was completely covered by mid-century ranch homes and manicured suburban lawns.",
         evidence: "1965 aerial subdivision patterns",
         modernLandmark: "Chevy Chase, between Tates Creek Rd and Euclid Ave",
@@ -371,10 +371,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "Threat & Preservation: Situated in residential backyards, requiring cultural resource stewardship and community partnership."
     ],
     mlModelDetails: {
-      algorithm: "Field geolocation by B.P. Thompson; pin placed at the centroid of his Slide 7 headstones marker (782.7, 577.5)",
-      metrics: "With the sheet's streets registered, its hand-drawn Slave Cemetery symbol lands roughly 250 px northwest of the headstones (Indian Mound area) - the 1865 sketch, not the street base, carries that offset",
-      controlPoints: "1337 Cooper Drive parcel boundary and dry-stone wall alignment",
-      confidence: 95
+      algorithm: "Field geolocation by B.P. Thompson + 6-DOF Planar Affine 1865 survey registration (composed via Slide 5 vector trace)",
+      metrics: "1865 survey RMSE 8.28 px; southern farm boundary (Indian Mound / Lakewood / Blairmore Dr) passes directly through Thompson's '/wall' marker (873.1, 584.0) and frames the 1337 Cooper Dr headstone locus (782.7, 577.5)",
+      controlPoints: "1337 Cooper Drive headstone locus · '/wall' perimeter wall · Lakewood Dr & Chinoe/Essex apex · Tates Creek & Indian Mound Dr",
+      confidence: 95.0
     },
     hotspots: [
       {
@@ -425,10 +425,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "Blue pond polygons reveal forgotten drainage basins that shaped modern Lexington stormwater flow."
     ],
     mlModelDetails: {
-      algorithm: "Planar homography fitted on road shapes - Thompson's yellow boundary (its NE edge is drawn on Richmond Rd, its west edge on Tates Creek Rd) and the Idle Hour golf-course outline via ICP, plus four building anchors; a steeply oblique Google Earth view (~2.4:1 foreshortening)",
-      metrics: "Yellow boundary 6.5 px off the Richmond Rd centreline, Idle Hour outline 27 px; Ashland 13, Shriners 26, Henry Clay High 0, Morton 12 px; perspective constrained valid across the whole slide",
-      controlPoints: "Yellow boundary on Richmond Rd and Tates Creek Rd, Idle Hour outline; anchors: Ashland, Shriners, Henry Clay High, Morton Jr High",
-      confidence: 76.8
+      algorithm: "SIFT + RANSAC 4-DOF Similarity on the unstretched 754x844 raw master against the 2024 orthophoto (22 SIFT inliers; zero perspective distortion)",
+      metrics: "SIFT keypoint RMSE 1.03 px (8-landmark check RMSE 0.42 px, max 0.73 px) — pure isotropic scale 1.4018x, rotation −0.015°",
+      controlPoints: "22 SIFT inliers + 8 verified landmarks: Ashland Mansion · Morton Middle (T) · Shriners Hospital · Chinoe & Cooper · Henry Clay High · 1337 Cooper (headstones & /wall) · Tates Creek & Alumni",
+      confidence: 98.6
     },
     hotspots: [
       {
@@ -448,10 +448,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-curtilage-racetrack",
         title: "Reconstructed Race Track Boundary",
         category: "Agricultural",
-        pixelX: 36.1,
-        pixelY: 42.1,
-        lat: 38.01988,
-        lng: -84.48633,
+        pixelX: 35.8,
+        pixelY: 38.5,
+        lat: 38.02074,
+        lng: -84.48648,
         summary: "Red vector trace marking Henry Clay's 1-mile turf training track.",
         evidence: "Slide 5 red vector oval",
         modernLandmark: "Chevy Chase subdivision (Cochran / Fontaine / Hart)",
@@ -461,10 +461,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-ponds-drainage",
         title: "Historic Plantation Spring Ponds",
         category: "Agricultural",
-        pixelX: 49.2,
-        pixelY: 65.5,
-        lat: 38.01416,
-        lng: -84.47912,
+        pixelX: 45.9,
+        pixelY: 59.4,
+        lat: 38.01566,
+        lng: -84.48094,
         summary: "Spring-fed ponds providing water for thoroughbred horses, livestock, and domestic operations.",
         evidence: "Slide 5 blue vector polygons",
         modernLandmark: "Slide 5 blue polygon near Cooper Dr / the 1337 Cooper headstones",
@@ -493,20 +493,20 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
       "Parcel 10 (1889 Beal to McDowell, 113 acres): The Gibson tract consolidation."
     ],
     mlModelDetails: {
-      algorithm: "90 deg CCW True-North Rotation + Similarity pinned on the Chinoe and Fontaine junction ticks, with the plat's Richmond Rd line ICP-fitted to the modern centreline",
-      metrics: "Chinoe tick 4 px, Fontaine junction 9 px, Richmond Rd double line 4 px off centreline; Ashland house 14 px as a free check; Bean's Mansfield 'C' sits ~500 m from where the 1877 plate and the NRHP distance put the house",
-      controlPoints: "Chinoe junction tick, Fontaine junction, Richmond Rd double line; checks: A Ashland, C Mansfield",
-      confidence: 84
+      algorithm: "90° CCW True-North Rotation + 15-Point 6-DOF Planar Affine spanning Richmond Rd, Shriners Ln, Cooper Dr, and Tates Creek Rd",
+      metrics: "RMSE 9.83 px across 15 verified road & estate landmarks (max 18.36 px); locks Tates Creek Rd, Richmond Rd, Shriners Ln, Chinoe Rd, Fontaine Rd, Cooper Dr, Mansfield (C), and Gibson's Cemetery (H)",
+      controlPoints: "Sycamore & Richmond · A Ashland · Chinoe & Richmond · F Toll House · Shriners Ln & Richmond · C Mansfield · Fontaine (SE) & Richmond · Shriners Ln & Cooper · H Gibson's Cemetery · Chinoe @Parcel 10 · Romany @Parcel 6 · Tates Creek (@Lakewood, @Cooper, @Sunset) · B Ashland on Tates Creek",
+      confidence: 90.2
     },
     hotspots: [
       {
         id: "hs-parcel-1",
         title: "Parcel 1: Bodley to H. Clay (1811, 123 Acres)",
         category: "Mansion",
-        pixelX: 50.3,
-        pixelY: 13.4,
-        lat: 38.02688,
-        lng: -84.47853,
+        pixelX: 49.4,
+        pixelY: 14.8,
+        lat: 38.02653,
+        lng: -84.479,
         summary: "The cornerstone acquisition where Henry Clay constructed the 1811 Latrobe-designed Ashland mansion.",
         evidence: "Fayette County Deed Book F, p. 112 / Bean 1980 Item 1",
         modernLandmark: "Ashland Park / Sycamore Road",
@@ -516,10 +516,10 @@ export const ANALYSIS_CHAPTERS: AnalysisChapter[] = [
         id: "hs-parcel-6",
         title: "Parcel 6: Morton to H. Clay (1830, 111 Acres)",
         category: "Agricultural",
-        pixelX: 35.6,
-        pixelY: 34.5,
-        lat: 38.02172,
-        lng: -84.48661,
+        pixelX: 33.3,
+        pixelY: 43.3,
+        lat: 38.01958,
+        lng: -84.48788,
         summary: "Expanded Clay's holdings onto Tates Creek Pike, later deeded to John M. Clay for his racing stable.",
         evidence: "Fayette County Deed Book 7, p. 44 / Bean 1980 Item 6",
         modernLandmark: "Tates Creek Rd & Cooper Dr",

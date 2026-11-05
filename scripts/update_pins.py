@@ -63,10 +63,10 @@ FEATURES = {
     # Chapter 5 - cemetery
     "hs-headstones-field":   ("anchor", "headstones"),
     "hs-stone-wall":         ("anchor", "wall_slash"),
-    # Chapter 6 - Slide 5 reconstruction (2160x1215 render)
+    # Chapter 6 - Slide 5 reconstruction (754x844 raw master)
     "hs-curtilage-mansion":  ("anchor", "mansion"),
-    "hs-curtilage-racetrack":("layer", "master_recon", (734, 846)),   # centre of the red race-track oval
-    "hs-ponds-drainage":     ("layer", "master_recon", (1031, 1024)), # large blue pond polygon (south)
+    "hs-curtilage-racetrack":("layer", "master_recon", (217, 587)),   # centre of the red race-track oval on raw5
+    "hs-ponds-drainage":     ("layer", "master_recon", (332, 721)),   # large blue pond polygon (south) on raw5
     # Chapter 7 - Bean plat (unrotated scan px)
     "hs-parcel-1":           ("plat", (317, 305)),                  # '1' label, Bodley tract
     "hs-parcel-6":           ("plat", (140, 116)),                  # '6' label, Morton tract on Tates Creek

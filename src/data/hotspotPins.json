@@ -11,53 +11,53 @@
   },
   "hs-enslaved-quarters": {
     "canvas": [
-      752.1,
-      92.8
+      753.6,
+      111.3
     ],
-    "pixelX": 47.0,
-    "pixelY": 10.3,
-    "lat": 38.02762,
-    "lng": -84.48033
+    "pixelX": 47.1,
+    "pixelY": 12.4,
+    "lat": 38.02712,
+    "lng": -84.48027
   },
   "hs-race-track": {
     "canvas": [
-      591.4,
-      292.4
+      573.3,
+      347.0
     ],
-    "pixelX": 37.0,
-    "pixelY": 32.5,
-    "lat": 38.02222,
-    "lng": -84.48585
+    "pixelX": 35.8,
+    "pixelY": 38.6,
+    "lat": 38.02074,
+    "lng": -84.48647
   },
   "hs-brick-slave-houses": {
     "canvas": [
-      566.7,
-      416.3
+      547.5,
+      491.9
     ],
-    "pixelX": 35.4,
-    "pixelY": 46.3,
-    "lat": 38.01886,
-    "lng": -84.4867
+    "pixelX": 34.2,
+    "pixelY": 54.7,
+    "lat": 38.01681,
+    "lng": -84.48736
   },
   "hs-tates-creek": {
     "canvas": [
-      579.4,
-      237.3
+      558.3,
+      282.9
     ],
-    "pixelX": 36.2,
-    "pixelY": 26.4,
-    "lat": 38.02371,
-    "lng": -84.48626
+    "pixelX": 34.9,
+    "pixelY": 31.4,
+    "lat": 38.02247,
+    "lng": -84.48699
   },
   "hs-hemp-barn": {
     "canvas": [
-      891.4,
-      379.1
+      919.6,
+      443.0
     ],
-    "pixelX": 55.7,
-    "pixelY": 42.1,
-    "lat": 38.01987,
-    "lng": -84.47554
+    "pixelX": 57.5,
+    "pixelY": 49.2,
+    "lat": 38.01814,
+    "lng": -84.47457
   },
   "hs-beers-ashland": {
     "canvas": [
@@ -71,33 +71,33 @@
   },
   "hs-beers-toll-ho": {
     "canvas": [
-      988.4,
-      297.0
+      930.7,
+      210.2
     ],
-    "pixelX": 61.8,
-    "pixelY": 33.0,
-    "lat": 38.02209,
-    "lng": -84.4722
+    "pixelX": 58.2,
+    "pixelY": 23.4,
+    "lat": 38.02444,
+    "lng": -84.47419
   },
   "hs-beers-jm-clay": {
     "canvas": [
-      561.9,
-      290.6
+      556.6,
+      289.6
     ],
-    "pixelX": 35.1,
-    "pixelY": 32.3,
-    "lat": 38.02226,
-    "lng": -84.48686
+    "pixelX": 34.8,
+    "pixelY": 32.2,
+    "lat": 38.02229,
+    "lng": -84.48705
   },
   "hs-beers-mansfield": {
     "canvas": [
-      1096.7,
-      455.0
+      1002.0,
+      319.6
     ],
-    "pixelX": 68.5,
-    "pixelY": 50.6,
-    "lat": 38.01781,
-    "lng": -84.46848
+    "pixelX": 62.6,
+    "pixelY": 35.5,
+    "lat": 38.02148,
+    "lng": -84.47174
   },
   "hs-49-headstones": {
     "canvas": [
@@ -121,13 +121,13 @@
   },
   "hs-49-pastures": {
     "canvas": [
-      591.4,
-      292.4
+      573.3,
+      347.0
     ],
-    "pixelX": 37.0,
-    "pixelY": 32.5,
-    "lat": 38.02222,
-    "lng": -84.48585
+    "pixelX": 35.8,
+    "pixelY": 38.6,
+    "lat": 38.02074,
+    "lng": -84.48647
   },
   "hs-65-headstones": {
     "canvas": [
@@ -141,13 +141,13 @@
   },
   "hs-65-growth": {
     "canvas": [
-      591.4,
-      292.4
+      573.3,
+      347.0
     ],
-    "pixelX": 37.0,
-    "pixelY": 32.5,
-    "lat": 38.02222,
-    "lng": -84.48585
+    "pixelX": 35.8,
+    "pixelY": 38.6,
+    "lat": 38.02074,
+    "lng": -84.48647
   },
   "hs-headstones-field": {
     "canvas": [
@@ -181,42 +181,42 @@
   },
   "hs-curtilage-racetrack": {
     "canvas": [
-      577.3,
-      378.5
+      573.1,
+      346.8
     ],
-    "pixelX": 36.1,
-    "pixelY": 42.1,
-    "lat": 38.01988,
-    "lng": -84.48633
+    "pixelX": 35.8,
+    "pixelY": 38.5,
+    "lat": 38.02074,
+    "lng": -84.48648
   },
   "hs-ponds-drainage": {
     "canvas": [
-      787.3,
-      589.7
+      734.4,
+      534.6
     ],
-    "pixelX": 49.2,
-    "pixelY": 65.5,
-    "lat": 38.01416,
-    "lng": -84.47912
+    "pixelX": 45.9,
+    "pixelY": 59.4,
+    "lat": 38.01566,
+    "lng": -84.48094
   },
   "hs-parcel-1": {
     "canvas": [
-      804.2,
-      120.3
+      790.8,
+      133.1
     ],
-    "pixelX": 50.3,
-    "pixelY": 13.4,
-    "lat": 38.02688,
-    "lng": -84.47853
+    "pixelX": 49.4,
+    "pixelY": 14.8,
+    "lat": 38.02653,
+    "lng": -84.479
   },
   "hs-parcel-6": {
     "canvas": [
-      569.2,
-      310.9
+      532.5,
+      389.8
     ],
-    "pixelX": 35.6,
-    "pixelY": 34.5,
-    "lat": 38.02172,
-    "lng": -84.48661
+    "pixelX": 33.3,
+    "pixelY": 43.3,
+    "lat": 38.01958,
+    "lng": -84.48788
   }
 }
